@@ -17,7 +17,7 @@ class CheckLoginPageView extends StatelessWidget {
     return ViewModelProvider<CheckLoginPageViewModel>.withConsumer(
       onModelReady: (viewModel) {
         // Do something once your viewModel is initialized
-        viewModel.checkLogin();
+
       },
       builder: (context, viewModel, child) {
         return ScreenTypeLayout(

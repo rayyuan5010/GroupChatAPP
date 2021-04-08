@@ -15,25 +15,42 @@ class LoginPageViewModel extends BaseViewModel {
     print('Name: ${data.name}, Password: ${data.password}');
     try {
       UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
+          .signInWithEmailAndPassword(
               email: data.name, password: data.password);
       Authentication.user = userCredential.user;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        return 'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-                email: data.name, password: data.password);
-        Authentication.user = userCredential.user;
-        if (e.code == 'wrong-password') {
-          return 'Wrong password provided for that user.';
-        }
+      if (e.code == 'wrong-password') {
+        return 'Wrong password provided for that user.';
       }
-    } on Exception catch (e) {
+    } catch (e) {
       return e.toString();
     }
     return null;
+    // });
+  }
+
+  Future<String> signup(LoginData data) async {
+    print('Name: ${data.name}, Password: ${data.password}');
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: data.name, password: data.password);
+      Authentication.user = userCredential.user;
+      if (userCredential != null) {
+        return null;
+      } else {
+        return '123';
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        return 'Wrong password provided for that user.';
+      } else {
+        return e.code;
+      }
+    } catch (e) {
+      return e.toString();
+    }
+
     // });
   }
 

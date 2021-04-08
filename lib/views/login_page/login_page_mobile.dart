@@ -4,35 +4,6 @@ class _LoginPageMobile extends StatelessWidget {
   final LoginPageViewModel viewModel;
 
   _LoginPageMobile(this.viewModel);
-// LoginMessages({
-//     this.usernameHint = defaultUsernameHint,
-//     this.passwordHint = defaultPasswordHint,
-//     this.confirmPasswordHint = defaultConfirmPasswordHint,
-//     this.forgotPasswordButton = defaultForgotPasswordButton,
-//     this.loginButton = defaultLoginButton,
-//     this.signupButton = defaultSignupButton,
-//     this.recoverPasswordButton = defaultRecoverPasswordButton,
-//     this.recoverPasswordIntro = defaultRecoverPasswordIntro,
-//     this.recoverPasswordDescription = defaultRecoverPasswordDescription,
-//     this.goBackButton = defaultGoBackButton,
-//     this.confirmPasswordError = defaultConfirmPasswordError,
-//     this.recoverPasswordSuccess = defaultRecoverPasswordSuccess,
-//   });
-
-  static const defaultUsernameHint = 'Email';
-  static const defaultPasswordHint = 'Password';
-  static const defaultConfirmPasswordHint = 'Confirm Password';
-  static const defaultForgotPasswordButton = 'Forgot Password?';
-  static const defaultLoginButton = 'LOGIN';
-  static const defaultSignupButton = 'SIGNUP';
-  static const defaultRecoverPasswordButton = 'RECOVER';
-  static const defaultRecoverPasswordIntro = 'Reset your password here';
-  static const defaultRecoverPasswordDescription =
-      'We will send your plain-text password to this email account.';
-  static const defaultGoBackButton = 'BACK';
-  static const defaultConfirmPasswordError = 'Password do not match!';
-  static const defaultRecoverPasswordSuccess = 'An email has been sent';
-
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
@@ -53,7 +24,7 @@ class _LoginPageMobile extends StatelessWidget {
       emailValidator: viewModel.emailValidator,
       passwordValidator: viewModel.passwordValidator,
       onLogin: viewModel.authUser,
-      onSignup: viewModel.authUser,
+      onSignup: viewModel.signup,
       onSubmitAnimationCompleted: () => viewModel.onComplete(context),
       onRecoverPassword: viewModel.recoverPassword,
     );
