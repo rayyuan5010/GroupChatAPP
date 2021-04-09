@@ -7,6 +7,7 @@ class MainGroupListPageViewModel extends BaseViewModel {
   TextEditingController controller = new TextEditingController();
   ExpandableSliverListController<int> listcontroller =
       ExpandableSliverListController();
-
+  bool firendListIsOpen = true;
+  bool groupListIsOpen = true;
   List<int> items = [1, 2, 3, 4, 5];
 }

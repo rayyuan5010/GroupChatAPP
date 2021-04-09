@@ -3,6 +3,7 @@ library root_page_view;
 import 'package:group_chat/views/check_login_page/check_login_page_view.dart';
 import 'package:group_chat/views/login_page/login_page_view.dart';
 import 'package:group_chat/views/main_group_list_page/main_group_list_page_view.dart';
+import 'package:group_chat/views/main_page_root/main_page_root_view.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';

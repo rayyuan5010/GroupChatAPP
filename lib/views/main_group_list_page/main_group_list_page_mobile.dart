@@ -7,28 +7,31 @@ class _MainGroupListPageMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(child: LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        return SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            child: Column(
-              children: [
-                Container(
-                    height: constraints.maxHeight / 100 * 10, child: _myInfo()),
-                Container(
-                  height: constraints.maxHeight / 100 * 5,
-                  child: Container(
-                    height: 40,
-                    child: _searchBar(),
+    return Scaffold(
+      body: SafeArea(child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  Container(
+                      height: constraints.maxHeight / 100 * 10,
+                      child: _myInfo()),
+                  Container(
+                    height: constraints.maxHeight / 100 * 5,
+                    child: Container(
+                      height: 40,
+                      child: _searchBar(),
+                    ),
                   ),
-                ),
-                Container(
-                    height: constraints.maxHeight / 100 * 82,
-                    child: _listView())
-              ],
-            ));
-      },
-    )));
+                  Container(
+                      height: constraints.maxHeight / 100 * 82,
+                      child: _listView())
+                ],
+              ));
+        },
+      )),
+    );
   }
 
   Widget _myInfo() {
@@ -43,7 +46,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
                 child: Icon(FontAwesomeIcons.user),
               )),
           Expanded(
-              flex: 6,
+              flex: 5,
               child: Column(
                 children: [
                   Container(height: 20),
@@ -64,22 +67,20 @@ class _MainGroupListPageMobile extends StatelessWidget {
                 ],
               )),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Row(
               children: [
                 GestureDetector(
-                    onTap: () {}, child: Icon(FontAwesomeIcons.bell, size: 20)),
-                Container(
-                  width: 10,
-                ),
+                    onTap: () {},
+                    child: Icon(FontAwesomeIcons.solidBell, size: 20)),
+                Spacer(),
                 GestureDetector(
                     onTap: () {},
                     child: Icon(FontAwesomeIcons.userPlus, size: 20)),
-                Container(
-                  width: 10,
-                ),
+                Spacer(),
                 GestureDetector(
                     onTap: () {}, child: Icon(FontAwesomeIcons.cog, size: 20)),
+                Spacer(),
               ],
             ),
           )
@@ -95,7 +96,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
         child: Icon(Icons.search),
       ),
       Expanded(
-        flex: 6,
+        flex: 8,
         child: TextField(
             cursorColor: Colors.black,
             decoration: new InputDecoration(
@@ -106,13 +107,13 @@ class _MainGroupListPageMobile extends StatelessWidget {
                 disabledBorder: InputBorder.none,
                 contentPadding:
                     EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                hintText: "Hint here")),
+                hintText: "輸入關鍵字搜尋")),
       ),
       Expanded(
-        flex: 3,
-        child: MaterialButton(
+        flex: 1,
+        child: IconButton(
           onPressed: () {},
-          child: Text('add Firend'),
+          icon: Icon(Icons.qr_code_scanner),
         ),
       )
     ]);
@@ -120,67 +121,78 @@ class _MainGroupListPageMobile extends StatelessWidget {
 
   Widget _listView() {
     return viewModel.controller.text == ""
-        ? CustomScrollView(
-            slivers: [
-              SliverPersistentHeader(
-                delegate: SectionHeaderDelegate("好友"),
-                pinned: true,
-              ),
-              SliverAnimatedList(
-                key: UniqueKey(),
-                initialItemCount: 80,
-                itemBuilder: (BuildContext context, int index,
-                    Animation<double> animation) {
-                  var faker = new Faker();
-
-                  return Container(
-                      height: 60,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              flex: 2,
-                              child: CircleAvatar(
-                                maxRadius: 25.0,
-                                backgroundColor: Colors.blueGrey,
-                                backgroundImage:
-                                    NetworkImage(faker.image.image()),
-                              )),
-                          Expanded(
-                              flex: 6,
-                              child: Column(
-                                children: [
-                                  Container(height: 10),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(faker.person.name(),
-                                        textAlign: TextAlign.left,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(fontSize: 20)),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(faker.conference.name(),
-                                        textAlign: TextAlign.left,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(fontSize: 14)),
-                                  )
-                                ],
-                              )),
-                          Expanded(flex: 2, child: Container())
-                        ],
-                      ));
-                },
-              ),
-              SliverPersistentHeader(
-                delegate: SectionHeaderDelegate("群組"),
-                pinned: true,
-              ),
-              SliverToBoxAdapter(
-                child: Text('list2'),
-              ),
-            ],
+        ? LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return CustomScrollView(
+                slivers: [
+                  SliverPersistentHeader(
+                    delegate: SectionHeaderDelegate("好友"),
+                    pinned: true,
+                  ),
+                  SliverAnimatedList(
+                    initialItemCount: 30,
+                    itemBuilder: (BuildContext context, int index,
+                        Animation<double> animation) {
+                      Faker faker = new Faker();
+                      return firendRow(faker);
+                    },
+                  ),
+                  SliverPersistentHeader(
+                    delegate: SectionHeaderDelegate("群組"),
+                    pinned: true,
+                  ),
+                  SliverAnimatedList(
+                    initialItemCount: 30,
+                    itemBuilder: (BuildContext context, int index,
+                        Animation<double> animation) {
+                      Faker faker = new Faker();
+                      return firendRow(faker);
+                    },
+                  )
+                ],
+              );
+            },
           )
         : ListView();
+  }
+
+  Widget firendRow(Faker faker) {
+    return Container(
+        key: UniqueKey(),
+        height: 60,
+        child: Row(
+          children: [
+            Expanded(
+                flex: 2,
+                child: CircleAvatar(
+                  maxRadius: 25.0,
+                  backgroundColor: Colors.blueGrey,
+                  backgroundImage: NetworkImage(faker.image.image()),
+                )),
+            Expanded(
+                flex: 6,
+                child: Column(
+                  children: [
+                    Container(height: 10),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(faker.person.name(),
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 20)),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(faker.conference.name(),
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 14)),
+                    )
+                  ],
+                )),
+            Expanded(flex: 2, child: Container())
+          ],
+        ));
   }
 }
 
@@ -188,14 +200,22 @@ class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
   final String title;
   final double height;
 
-  SectionHeaderDelegate(this.title, [this.height = 50]);
+  SectionHeaderDelegate(this.title, {this.height = 50});
 
   @override
   Widget build(context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Theme.of(context).primaryColor,
-      alignment: Alignment.center,
-      child: Text(title),
+      alignment: Alignment.centerLeft,
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20),
+        child: Row(
+          children: [
+            Text(title),
+            Spacer(),
+          ],
+        ),
+      ),
     );
   }
 

@@ -12,7 +12,7 @@ class _RootPageMobile extends StatelessWidget {
         return LoginPageView();
         break;
       case LoginStatus.signIn:
-        return MainGroupListPageView();
+        return MainPageRootView();
         break;
       case LoginStatus.checkStatus:
         return CheckLoginPageView();

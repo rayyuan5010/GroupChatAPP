@@ -1,7 +1,5 @@
 library main_group_list_page_view;
 
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
