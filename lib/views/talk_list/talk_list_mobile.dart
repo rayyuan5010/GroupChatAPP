@@ -71,7 +71,7 @@ class _TalkListMobile extends StatelessWidget {
                 itemCount: 30,
                 itemBuilder: (BuildContext context, int index) {
                   Faker faker = new Faker();
-                  return firendRow(faker);
+                  return firendRow(faker, context);
                 },
               );
             },
@@ -79,43 +79,54 @@ class _TalkListMobile extends StatelessWidget {
         : ListView();
   }
 
-  Widget firendRow(Faker faker) {
-    return Container(
-        key: UniqueKey(),
-        height: 60,
-        child: Row(
-          children: [
-            Expanded(
-                flex: 2,
-                child: CircleAvatar(
-                  maxRadius: 25.0,
-                  backgroundColor: Colors.blueGrey,
-                  backgroundImage: NetworkImage(faker.image.image()),
-                )),
-            Expanded(
-                flex: 6,
-                child: Column(
-                  children: [
-                    Container(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(faker.person.name(),
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 20)),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(faker.conference.name(),
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 14)),
-                    )
-                  ],
-                )),
-            Expanded(flex: 2, child: Container())
-          ],
-        ));
+  Widget firendRow(Faker faker, BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MessagePageView(
+                    title: faker.person.name(),
+                  )),
+        );
+      },
+      child: Container(
+          key: UniqueKey(),
+          height: 60,
+          child: Row(
+            children: [
+              Expanded(
+                  flex: 2,
+                  child: CircleAvatar(
+                    maxRadius: 25.0,
+                    backgroundColor: Colors.blueGrey,
+                    backgroundImage: NetworkImage(faker.image.image()),
+                  )),
+              Expanded(
+                  flex: 6,
+                  child: Column(
+                    children: [
+                      Container(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(faker.person.name(),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 20)),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(faker.conference.name(),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 14)),
+                      )
+                    ],
+                  )),
+              Expanded(flex: 2, child: Container())
+            ],
+          )),
+    );
   }
 }
 
