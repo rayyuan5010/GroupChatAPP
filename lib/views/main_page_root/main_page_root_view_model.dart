@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_chat/core/base/base_view_model.dart';
 import 'package:group_chat/views/main_group_list_page/main_group_list_page_view.dart';
+import 'package:group_chat/views/talk_list/talk_list_view.dart';
 
 class MainPageRootViewModel extends BaseViewModel {
   MainPageRootViewModel();
@@ -8,11 +9,12 @@ class MainPageRootViewModel extends BaseViewModel {
   int currentIndex = 0;
   List<Widget> pages = [
     MainGroupListPageView(),
-    Container(
-      child: Text('page2'),
-    ),
+    TalkListView(),
     Container(
       child: Text('page3'),
+    ),
+    Container(
+      child: Text('page4'),
     ),
   ];
   PageController controller = new PageController();

@@ -39,9 +39,12 @@ class _MainPageRootMobile extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
-            icon: Icon(Icons.next_week_sharp),
+            icon: Icon(
+              FontAwesomeIcons.solidUser,
+              size: 19,
+            ),
             title: Text(
-              '商店',
+              '個人資訊',
             ),
             activeColor: Colors.pink,
             textAlign: TextAlign.center,
@@ -49,7 +52,6 @@ class _MainPageRootMobile extends StatelessWidget {
           BottomNavyBarItem(
             icon: Icon(Icons.settings),
             title: Text('設定'),
-            activeColor: Colors.blue,
             textAlign: TextAlign.center,
           ),
         ],

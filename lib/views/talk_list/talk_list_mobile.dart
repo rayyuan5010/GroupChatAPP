@@ -1,9 +1,9 @@
-part of main_group_list_page_view;
+part of talk_list_view;
 
-class _MainGroupListPageMobile extends StatelessWidget {
-  final MainGroupListPageViewModel viewModel;
+class _TalkListMobile extends StatelessWidget {
+  final TalkListViewModel viewModel;
 
-  _MainGroupListPageMobile(this.viewModel);
+  _TalkListMobile(this.viewModel);
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +17,6 @@ class _MainGroupListPageMobile extends StatelessWidget {
                   child: Column(
                     children: [
                       Container(
-                          height: constraints.maxHeight / 100 * 10,
-                          child: _myInfo()),
-                      Container(
                         height: constraints.maxHeight / 100 * 5,
                         child: Container(
                           height: 40,
@@ -27,67 +24,12 @@ class _MainGroupListPageMobile extends StatelessWidget {
                         ),
                       ),
                       Container(
-                          height: constraints.maxHeight / 100 * 85,
+                          height: constraints.maxHeight / 100 * 95,
                           child: _listView())
                     ],
                   ));
             },
           )),
-    );
-  }
-
-  Widget _myInfo() {
-    return Container(
-      child: Row(
-        children: [
-          Expanded(
-              flex: 2,
-              child: CircleAvatar(
-                maxRadius: 30.0,
-                backgroundColor: Colors.blueGrey,
-                child: Icon(FontAwesomeIcons.user),
-              )),
-          Expanded(
-              flex: 5,
-              child: Column(
-                children: [
-                  Container(height: 20),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Rayyuan',
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 20)),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Rayyuan',
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 14)),
-                  )
-                ],
-              )),
-          Expanded(
-            flex: 3,
-            child: Row(
-              children: [
-                GestureDetector(
-                    onTap: () {},
-                    child: Icon(FontAwesomeIcons.solidBell, size: 20)),
-                Spacer(),
-                GestureDetector(
-                    onTap: () {},
-                    child: Icon(FontAwesomeIcons.userPlus, size: 20)),
-                Spacer(),
-                GestureDetector(
-                    onTap: () {}, child: Icon(FontAwesomeIcons.cog, size: 20)),
-                Spacer(),
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 

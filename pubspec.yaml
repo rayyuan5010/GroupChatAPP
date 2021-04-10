@@ -22,6 +22,7 @@ dependencies:
     email_validator: '^1.0.0'
     firebase_database: ^6.1.1
     bottom_navy_bar: ^6.0.0
+    animated_bottom_navigation_bar: ^0.3.2
     expandable_sliver_list: ^4.0.0
     font_awesome_flutter: ^8.2.0
     faker: ^1.3.0
