@@ -67,33 +67,12 @@ class _TalkListMobile extends StatelessWidget {
     return viewModel.controller.text == ""
         ? LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
-              return CustomScrollView(
-                slivers: [
-                  SliverPersistentHeader(
-                    delegate: SectionHeaderDelegate("好友"),
-                    pinned: true,
-                  ),
-                  SliverAnimatedList(
-                    initialItemCount: 30,
-                    itemBuilder: (BuildContext context, int index,
-                        Animation<double> animation) {
-                      Faker faker = new Faker();
-                      return firendRow(faker);
-                    },
-                  ),
-                  SliverPersistentHeader(
-                    delegate: SectionHeaderDelegate("群組"),
-                    pinned: true,
-                  ),
-                  SliverAnimatedList(
-                    initialItemCount: 30,
-                    itemBuilder: (BuildContext context, int index,
-                        Animation<double> animation) {
-                      Faker faker = new Faker();
-                      return firendRow(faker);
-                    },
-                  )
-                ],
+              return ListView.builder(
+                itemCount: 30,
+                itemBuilder: (BuildContext context, int index) {
+                  Faker faker = new Faker();
+                  return firendRow(faker);
+                },
               );
             },
           )
