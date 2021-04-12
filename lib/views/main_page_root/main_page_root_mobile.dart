@@ -9,6 +9,7 @@ class _MainPageRootMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView.builder(
+        physics: NeverScrollableScrollPhysics(),
         controller: viewModel.controller,
         itemCount: viewModel.pages.length,
         itemBuilder: (BuildContext context, int index) {
