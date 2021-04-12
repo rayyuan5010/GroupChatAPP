@@ -12,13 +12,15 @@ part 'message_page_tablet.dart';
 part 'message_page_desktop.dart';
 
 class MessagePageView extends StatelessWidget {
-  MessagePageView({@required this.title});
+  MessagePageView({@required this.title}) : super(key: UniqueKey());
   final String title;
   @override
   Widget build(BuildContext context) {
     MessagePageViewModel viewModel = MessagePageViewModel(title: title);
     return ViewModelProvider<MessagePageViewModel>.withConsumer(
-      onModelReady: (viewModel) {},
+      onModelReady: (viewModel) {
+        viewModel.getPosition(context);
+      },
       builder: (context, viewModel, child) {
         return ScreenTypeLayout(
           mobile: _MessagePageMobile(viewModel),

@@ -14,7 +14,7 @@ class _TextMessageMobile extends StatelessWidget {
         // height: 80,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text('123'),
+          child: Text('123\r\n123123'),
         ),
       ),
     );

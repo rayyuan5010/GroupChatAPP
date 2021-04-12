@@ -22,6 +22,10 @@ class _MessagePageMobile extends StatelessWidget {
       ),
     );
   }
+  // List<Widget> pages = [
+  //  mapWidget(),
+  //   Container(child: Text('p2')),
+  // ];
 
   Widget bodyView() {
     return LayoutBuilder(
@@ -67,13 +71,30 @@ class _MessagePageMobile extends StatelessWidget {
                                   ],
                                 ),
                                 Container(
-                                  height: constraints.maxHeight < 60
+                                  height: constraints.maxHeight < 50
                                       ? 0
-                                      : constraints.maxHeight - 60,
+                                      : constraints.maxHeight - 50,
                                   child: PageView(
                                     physics: NeverScrollableScrollPhysics(),
                                     controller: viewModel.controller,
-                                    children: viewModel.pages,
+                                    children: [
+                                      GoogleMap(
+                                        mapType: MapType.hybrid,
+                                        initialCameraPosition:
+                                            viewModel.kGooglePlex,
+                                        onMapCreated:
+                                            (GoogleMapController controller) {
+                                          if (viewModel.first) {
+                                            viewModel.mapController
+                                                .complete(controller);
+                                            viewModel.first = false;
+                                            viewModel.notifyListeners();
+                                          }
+                                        },
+                                        markers: viewModel.markers,
+                                      ),
+                                      Container()
+                                    ],
                                   ),
                                 )
                               ],
@@ -81,13 +102,17 @@ class _MessagePageMobile extends StatelessWidget {
                           }),
                         )),
                   ),
-                  AnimatedContainer(
-                    duration: Duration(milliseconds: 500),
+                  Container(
                     height: viewModel.showForBottom(constraints.maxHeight),
-                    child: ListView.builder(
+                    child: ListView.separated(
                       itemCount: 3,
                       itemBuilder: (BuildContext context, int index) {
                         return TextMessageWidget();
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return Container(
+                          height: 40,
+                        );
                       },
                     ),
                   ),
