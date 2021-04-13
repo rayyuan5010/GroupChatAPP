@@ -2,6 +2,7 @@ library message_page_view;
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:group_chat/other/message.dart';
 import 'package:group_chat/widgets/text_message/text_message_widget.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';

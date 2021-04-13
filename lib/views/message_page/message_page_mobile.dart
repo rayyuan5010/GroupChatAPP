@@ -107,7 +107,21 @@ class _MessagePageMobile extends StatelessWidget {
                     child: ListView.separated(
                       itemCount: 3,
                       itemBuilder: (BuildContext context, int index) {
-                        return TextMessageWidget();
+                        final sender = MessageSender(
+                            name: "Ray",
+                            id: UniqueKey().toString(),
+                            imageUrl: "");
+                        final content = MessageContent(messageRowData: {
+                          "content":
+                              "aasfasf\r\nsaffasfasfasfasfasf\r\nasfas\r\nsafasfasf",
+                          "timestamp": 1618294531000,
+                          "type": 0,
+                          "id": "xvaxewv-safasf-wwqrqwr",
+                          "sender": "xvzxzv-safasf-wwqrqwr"
+                        }, messageType: MessageType.TEXT);
+                        Message message = new Message(
+                            messageContent: content, messageSender: sender);
+                        return TextMessageWidget(message: message);
                       },
                       separatorBuilder: (BuildContext context, int index) {
                         return Container(
