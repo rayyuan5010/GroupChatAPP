@@ -60,6 +60,19 @@ class TextMessageData extends BaseMessageData {
   }
 }
 
+class StikerMessageData extends BaseMessageData {
+  StikerMessageData(
+      {@required this.id, @required this.senderId, @required this.sendTime});
+  // final String text;
+  final String id;
+  final String senderId;
+  final DateTime sendTime;
+  // @override
+  // String get showMessage {
+  //   return this.text;
+  // }
+}
+
 enum MessageType {
   TEXT,
   STIKER,

@@ -5,6 +5,8 @@ import 'package:group_chat/theme/normal.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
 
+import '../../other/message.dart';
+
 part 'text_message_mobile.dart';
 part 'text_message_tablet.dart';
 part 'text_message_desktop.dart';

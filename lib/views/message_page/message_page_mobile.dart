@@ -78,21 +78,33 @@ class _MessagePageMobile extends StatelessWidget {
                                     physics: NeverScrollableScrollPhysics(),
                                     controller: viewModel.controller,
                                     children: [
-                                      GoogleMap(
-                                        mapType: MapType.hybrid,
-                                        initialCameraPosition:
-                                            viewModel.kGooglePlex,
-                                        onMapCreated:
-                                            (GoogleMapController controller) {
-                                          if (viewModel.first) {
-                                            viewModel.mapController
-                                                .complete(controller);
-                                            viewModel.first = false;
+                                      GoogleMapWidget(
+                                          onFinished:
+                                              (Completer<GoogleMapController>
+                                                  _controller) async {
+                                            final position = await Geolocator
+                                                .getCurrentPosition();
+                                            final GoogleMapController
+                                                controller =
+                                                await _controller.future;
+                                            controller.animateCamera(
+                                                CameraUpdate.newCameraPosition(
+                                                    CameraPosition(
+                                              target: LatLng(position.latitude,
+                                                  position.longitude),
+                                              zoom: 14.4746,
+                                            )));
+                                            viewModel.markers = {
+                                              Marker(
+                                                markerId: MarkerId("marker_1"),
+                                                position: LatLng(
+                                                    position.latitude,
+                                                    position.longitude),
+                                              )
+                                            };
                                             viewModel.notifyListeners();
-                                          }
-                                        },
-                                        markers: viewModel.markers,
-                                      ),
+                                          },
+                                          markers: viewModel.markers),
                                       Container()
                                     ],
                                   ),
@@ -109,7 +121,7 @@ class _MessagePageMobile extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         final sender = MessageSender(
                             name: "Ray",
-                            id: UniqueKey().toString(),
+                            id: "xvzxzv-safasf-wwqrqwr",
                             imageUrl: "");
                         final content = MessageContent(messageRowData: {
                           "content":
@@ -119,8 +131,18 @@ class _MessagePageMobile extends StatelessWidget {
                           "id": "xvaxewv-safasf-wwqrqwr",
                           "sender": "xvzxzv-safasf-wwqrqwr"
                         }, messageType: MessageType.TEXT);
+                        final content2 = MessageContent(
+                            messageType: MessageType.STIKER,
+                            messageRowData: {
+                              "content":
+                                  "https://firebasestorage.googleapis.com/v0/b/myapplication5-c682d.appspot.com/o/gif%2F001%2F0529.gif_wh860.gif?alt=media&token=02d4b4c5-8df4-4dcf-bac7-35f14f513322",
+                              "timestamp": 1618294531000,
+                              "type": 0,
+                              "id": "xvaxewv-safasf-wwqrqwr",
+                              "sender": "xvzxzv-safasf-wwqrqwr"
+                            });
                         Message message = new Message(
-                            messageContent: content, messageSender: sender);
+                            messageContent: content2, messageSender: sender);
                         return TextMessageWidget(message: message);
                       },
                       separatorBuilder: (BuildContext context, int index) {

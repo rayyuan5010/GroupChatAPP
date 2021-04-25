@@ -1,11 +1,16 @@
 library message_page_view;
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:group_chat/other/message.dart';
 import 'package:group_chat/widgets/text_message/text_message_widget.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import '../../other/message.dart';
+import '../../widgets/google_map/google_map_widget.dart';
 import 'message_page_view_model.dart';
 
 part 'message_page_mobile.dart';
