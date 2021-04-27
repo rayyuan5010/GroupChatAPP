@@ -1,76 +1,61 @@
 import 'package:flutter/material.dart';
 
 class Message {
-  Message({@required this.messageContent, @required this.messageSender});
-  final MessageContent messageContent;
-  final MessageSender messageSender;
+  MessageContent messageContent;
+  MessageSender messageSender;
+  Message(Map messageRowData) {
+    this.messageContent = new MessageContent(messageRowData);
+    this.messageSender = new MessageSender(messageRowData);
+  }
 }
 
 class MessageContent {
-  MessageContent({@required this.messageType, @required this.messageRowData});
-  final MessageType messageType;
-  final Map messageRowData;
-  dynamic messageData;
-  String get showMessage {
-    switch (MessageType.values[messageRowData["type"]]) {
-      case MessageType.TEXT:
-        messageData = TextMessageData(
-          id: messageRowData["id"],
-          senderId: messageRowData["sender"],
-          sendTime:
-              DateTime.fromMillisecondsSinceEpoch(messageRowData["timestamp"]),
-          text: messageRowData["content"],
-        );
-        break;
-      default:
-        messageData = BaseMessageData();
-        break;
-    }
-    return messageData.showMessage;
+  /*
+  {
+    // "senderId":"id",
+    // "senderName":"name",
+    // "to":"",
+    // "reciveType":"",
+    "messageId":"",
+    "messageType":"",
+    "messageTime":"",
+    "messageContent":"",
+    "messageTabId":""
+}
+
+  */
+  MessageType messageType;
+  String id;
+  DateTime reciveTime;
+  String content;
+  String tabId;
+  ReciveType reciveType;
+  List<String> to;
+  // Map messageRowData;
+  // dynamic messageData;
+
+  MessageContent(Map rd) {
+    this.id = rd['messageId'];
+    this.reciveTime = DateTime.fromMillisecondsSinceEpoch(rd['messageTime']);
+    this.content = rd['messageContent'];
+    this.tabId = rd['messageTabId'];
+
+    this.messageType = MessageType.values[rd['messageType']];
+
+    this.reciveType = ReciveType.values[rd['reciveType']];
+    this.to = List.from(rd['to']);
   }
 }
 
 class MessageSender {
-  MessageSender(
-      {@required this.name, @required this.id, @required this.imageUrl});
-  final String name;
-  final String id;
-  final String imageUrl;
-}
-
-class BaseMessageData {
-  String get showMessage {
-    return "訊息發生錯誤";
+  String name;
+  String id;
+  String imageUrl;
+  MessageSender(Map rd) {
+    this.name = rd['senderName'];
+    this.id = rd['senderId'];
+    this.imageUrl = rd['senderImage'];
   }
-}
-
-class TextMessageData extends BaseMessageData {
-  TextMessageData(
-      {@required this.text,
-      @required this.id,
-      @required this.senderId,
-      @required this.sendTime});
-  final String text;
-  final String id;
-  final String senderId;
-  final DateTime sendTime;
-  @override
-  String get showMessage {
-    return this.text;
-  }
-}
-
-class StikerMessageData extends BaseMessageData {
-  StikerMessageData(
-      {@required this.id, @required this.senderId, @required this.sendTime});
-  // final String text;
-  final String id;
-  final String senderId;
-  final DateTime sendTime;
-  // @override
-  // String get showMessage {
-  //   return this.text;
-  // }
 }
 
 enum MessageType {
@@ -82,3 +67,4 @@ enum MessageType {
   MAPPATH,
   DRAW,
 }
+enum ReciveType { PUBLIC, PRIVATE }

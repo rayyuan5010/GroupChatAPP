@@ -5,29 +5,12 @@ class _TextMessageMobile extends StatelessWidget {
   final Message message;
   @override
   Widget build(BuildContext context) {
-    return selfMessage();
+    return selfTextMessage();
   }
 
-  Widget selfMessage() {
-    switch (message.messageContent.messageType) {
-      case MessageType.TEXT:
-        return selfTextMessage();
-      case MessageType.STIKER:
-        return selfStikerMessage();
-      case MessageType.IMAGE:
-        return selfTextMessage();
-      case MessageType.FILE:
-        return selfTextMessage();
-      case MessageType.MAPMARKER:
-        return selfTextMessage();
-      case MessageType.MAPPATH:
-        return selfTextMessage();
-      case MessageType.DRAW:
-        return selfTextMessage();
-      default:
-        return selfTextMessage();
-    }
-  }
+  // Widget selfMessage() {
+
+  // }
 
   Widget selfTextMessage() {
     return Align(
@@ -43,29 +26,8 @@ class _TextMessageMobile extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(this.message.messageContent.showMessage,
+            child: Text(this.message.messageContent.content,
                 style: TextStyle(fontSize: 14)),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget selfStikerMessage() {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Padding(
-        padding: const EdgeInsets.only(right: 10),
-        child: Container(
-          decoration: BoxDecoration(
-              // color: AppThemes.textMessageBubble,
-              borderRadius: BorderRadius.all(Radius.circular(10.0))),
-          constraints: BoxConstraints(
-            maxWidth: 250,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.network(this.message.messageContent.showMessage),
           ),
         ),
       ),

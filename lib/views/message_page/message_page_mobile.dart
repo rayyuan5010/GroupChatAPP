@@ -119,31 +119,7 @@ class _MessagePageMobile extends StatelessWidget {
                     child: ListView.separated(
                       itemCount: 3,
                       itemBuilder: (BuildContext context, int index) {
-                        final sender = MessageSender(
-                            name: "Ray",
-                            id: "xvzxzv-safasf-wwqrqwr",
-                            imageUrl: "");
-                        final content = MessageContent(messageRowData: {
-                          "content":
-                              "aasfasf\r\nsaffasfasfasfasfasf\r\nasfas\r\nsafasfasf",
-                          "timestamp": 1618294531000,
-                          "type": 0,
-                          "id": "xvaxewv-safasf-wwqrqwr",
-                          "sender": "xvzxzv-safasf-wwqrqwr"
-                        }, messageType: MessageType.TEXT);
-                        final content2 = MessageContent(
-                            messageType: MessageType.STIKER,
-                            messageRowData: {
-                              "content":
-                                  "https://firebasestorage.googleapis.com/v0/b/myapplication5-c682d.appspot.com/o/gif%2F001%2F0529.gif_wh860.gif?alt=media&token=02d4b4c5-8df4-4dcf-bac7-35f14f513322",
-                              "timestamp": 1618294531000,
-                              "type": 0,
-                              "id": "xvaxewv-safasf-wwqrqwr",
-                              "sender": "xvzxzv-safasf-wwqrqwr"
-                            });
-                        Message message = new Message(
-                            messageContent: content2, messageSender: sender);
-                        return TextMessageWidget(message: message);
+                        return Container();
                       },
                       separatorBuilder: (BuildContext context, int index) {
                         return Container(
