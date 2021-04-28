@@ -10,6 +10,7 @@ class RootPageViewModel extends BaseViewModel {
     if (user == null) {
       status = LoginStatus.noSingIn;
     } else {
+      Authentication.user = FirebaseAuth.instance.currentUser;
       status = LoginStatus.signIn;
     }
     notifyListeners();

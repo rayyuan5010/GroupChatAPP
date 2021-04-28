@@ -119,7 +119,19 @@ class _MessagePageMobile extends StatelessWidget {
                     child: ListView.separated(
                       itemCount: 3,
                       itemBuilder: (BuildContext context, int index) {
-                        return Container();
+                        return MessageWidget(
+                            message: Message({
+                          "senderId": Authentication.user.uid,
+                          "senderName": "name",
+                          "senderImage": "image",
+                          "to": "",
+                          "reciveType": 0,
+                          "messageId": "sacascasc",
+                          "messageType": 0,
+                          "messageTime": DateTime.now().millisecondsSinceEpoch,
+                          "messageContent": "Hello World!",
+                          "messageTabId": ""
+                        }));
                       },
                       separatorBuilder: (BuildContext context, int index) {
                         return Container(

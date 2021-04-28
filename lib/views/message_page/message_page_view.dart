@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:group_chat/other/auth.dart';
 import 'package:group_chat/other/message.dart';
 import 'package:group_chat/widgets/message/message_widget.dart';
 

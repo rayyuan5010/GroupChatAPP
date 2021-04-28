@@ -35,15 +35,19 @@ class MessageContent {
   // dynamic messageData;
 
   MessageContent(Map rd) {
+    print(rd);
+    // print(type(rd));
     this.id = rd['messageId'];
-    this.reciveTime = DateTime.fromMillisecondsSinceEpoch(rd['messageTime']);
+    this.reciveTime = DateTime.fromMillisecondsSinceEpoch(rd["messageTime"]);
     this.content = rd['messageContent'];
     this.tabId = rd['messageTabId'];
 
     this.messageType = MessageType.values[rd['messageType']];
 
     this.reciveType = ReciveType.values[rd['reciveType']];
-    this.to = List.from(rd['to']);
+    if (rd['to'] != '') {
+      this.to = List.from(rd['to']);
+    }
   }
 }
 

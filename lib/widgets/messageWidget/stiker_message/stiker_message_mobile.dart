@@ -1,8 +1,9 @@
 part of stiker_message_widget;
 
 class _StikerMessageMobile extends StatelessWidget {
-  _StikerMessageMobile({@required this.message});
+  _StikerMessageMobile({@required this.message, @required this.self});
   final Message message;
+  final bool self;
   @override
   Widget build(BuildContext context) {
     return selfMessage();
