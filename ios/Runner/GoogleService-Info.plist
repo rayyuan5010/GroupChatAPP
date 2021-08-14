@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>843417861915-qh0l5v8ipsedr2v9vqbi26pu0iop7pr3.apps.googleusercontent.com</string>
+	<string>1043077299115-c0rk95jpu2rppf5c4haeick0ln0ibi0e.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.843417861915-qh0l5v8ipsedr2v9vqbi26pu0iop7pr3</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>843417861915-2u4bk41mnbg9bf3klojc85dq53067tfg.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.1043077299115-c0rk95jpu2rppf5c4haeick0ln0ibi0e</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA_qqG5ht_5q0BeQmMv95Xa6vo95mUsfOA</string>
+	<string>AIzaSyCEQSmM8zAxIUNaRzacJj7isxC5TzFMUkE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>843417861915</string>
+	<string>1043077299115</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.rayyuan.groupChat</string>
 	<key>PROJECT_ID</key>
-	<string>myapplication5-c682d</string>
+	<string>groupchat-2ba1a</string>
 	<key>STORAGE_BUCKET</key>
-	<string>myapplication5-c682d.appspot.com</string>
+	<string>groupchat-2ba1a.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:843417861915:ios:06b88eb547345969cd9dbe</string>
+	<string>1:1043077299115:ios:69ac627469ed915d90f0ee</string>
 	<key>DATABASE_URL</key>
-	<string>https://myapplication5-c682d.firebaseio.com</string>
+	<string>https://groupchat-2ba1a-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>
