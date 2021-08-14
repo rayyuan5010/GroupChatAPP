@@ -7,7 +7,7 @@ class _RootPageMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (viewModel.status) {
+    switch (Authentication.status) {
       case LoginStatus.noSingIn:
         return LoginPageView();
         break;

@@ -121,7 +121,7 @@ class _MessagePageMobile extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return MessageWidget(
                             message: Message({
-                          "senderId": Authentication.user.uid,
+                          "senderId": Authentication.user.id,
                           "senderName": "name",
                           "senderImage": "image",
                           "to": "",

@@ -1,6 +1,6 @@
 library message_widget;
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:group_chat/model/user.dart';
 import 'package:group_chat/other/auth.dart';
 import 'package:group_chat/other/message.dart';
 import 'package:group_chat/widgets/messageWidget/image_message/image_message_widget.dart';

@@ -15,7 +15,7 @@ class MessagePageViewModel extends BaseViewModel {
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
-
+  TextEditingController textEditingController = new TextEditingController();
   double showForTop(height) => height / 100 * 50;
   bool first = true;
   double showForBottom(height) => height / 100 * 41;

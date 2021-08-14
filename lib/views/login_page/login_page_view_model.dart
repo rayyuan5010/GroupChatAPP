@@ -1,56 +1,57 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:group_chat/core/base/base_view_model.dart';
+import 'package:group_chat/model/user.dart';
+import 'package:group_chat/other/apireturn.dart';
 import 'package:group_chat/other/auth.dart';
+import 'package:group_chat/other/dbHelp.dart';
+import 'package:group_chat/other/groupChatSDK.dart';
+import 'package:group_chat/other/rootController.dart';
 import 'package:group_chat/views/main_group_list_page/main_group_list_page_view.dart';
+import 'package:group_chat/views/root_page/root_page_view_model.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'dart:core';
 
+import 'package:sqflite/sqflite.dart';
+
 class LoginPageViewModel extends BaseViewModel {
   LoginPageViewModel();
+
   Future<String> authUser(LoginData data) async {
     print('Name: ${data.name}, Password: ${data.password}');
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: data.name, password: data.password);
-      Authentication.user = userCredential.user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'wrong-password') {
-        return 'Wrong password provided for that user.';
-      }
-    } catch (e) {
+    try {} catch (e) {
       return e.toString();
     }
-    return null;
-    // });
   }
 
   Future<String> signup(LoginData data) async {
     print('Name: ${data.name}, Password: ${data.password}');
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: data.name, password: data.password);
-      Authentication.user = userCredential.user;
-      if (userCredential != null) {
+      APIReturn resp = await NetWorkAPI.createUser(data.name, data.password);
+
+      if (resp.status) {
+        DBHelper dbHelper = new DBHelper();
+        Database database = await dbHelper.db;
+
+        Authentication.status = LoginStatus.signIn;
+        Authentication.user = User(
+            id: resp.data['id'], account: data.name, password: data.password);
+        await database.insert(
+          'tb_userInfo',
+          Authentication.user.toMap(),
+        );
         return null;
       } else {
-        return '123';
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'wrong-password') {
-        return 'Wrong password provided for that user.';
-      } else {
-        return e.code;
+        return resp.message;
       }
     } catch (e) {
+      print(e.toString());
       return e.toString();
     }
-
+    return '123';
     // });
   }
 
@@ -77,12 +78,6 @@ class LoginPageViewModel extends BaseViewModel {
     }
 
     return null;
-  };
-
-  Function onComplete = (context) {
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => MainGroupListPageView(),
-    ));
   };
 
   // Add ViewModel specific code here

@@ -61,7 +61,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Rayyuan',
+                    child: Text(Authentication.user.id,
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 14)),
@@ -123,42 +123,53 @@ class _MainGroupListPageMobile extends StatelessWidget {
 
   Widget _listView() {
     return viewModel.controller.text == ""
-        ? LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return CustomScrollView(
-                slivers: [
-                  SliverPersistentHeader(
-                    delegate: SectionHeaderDelegate("好友"),
-                    pinned: true,
-                  ),
-                  SliverAnimatedList(
-                    initialItemCount: 30,
-                    itemBuilder: (BuildContext context, int index,
-                        Animation<double> animation) {
-                      Faker faker = new Faker();
-                      return firendRow(faker);
-                    },
-                  ),
-                  SliverPersistentHeader(
-                    delegate: SectionHeaderDelegate("群組"),
-                    pinned: true,
-                  ),
-                  SliverAnimatedList(
-                    initialItemCount: 30,
-                    itemBuilder: (BuildContext context, int index,
-                        Animation<double> animation) {
-                      Faker faker = new Faker();
-                      return firendRow(faker);
-                    },
-                  )
-                ],
+        ? FutureBuilder<dynamic>(
+            future: viewModel.getGroup(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.none &&
+                  snapshot.hasData == null) {
+                //print('project snapshot data is: ${projectSnap.data}');
+                return Container();
+              }
+              print(snapshot.data);
+              print(snapshot.data["dataCount"]);
+              return LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return CustomScrollView(
+                    slivers: [
+                      SliverPersistentHeader(
+                        delegate: SectionHeaderDelegate("好友"),
+                        pinned: true,
+                      ),
+                      SliverAnimatedList(
+                        initialItemCount: 0,
+                        itemBuilder: (BuildContext context, int index,
+                            Animation<double> animation) {
+                          // Faker faker = new Faker();
+                          return firendRow({});
+                        },
+                      ),
+                      SliverPersistentHeader(
+                        delegate: SectionHeaderDelegate("群組"),
+                        pinned: true,
+                      ),
+                      SliverAnimatedList(
+                        initialItemCount: snapshot.data["dataCount"],
+                        itemBuilder: (BuildContext context, int index,
+                            Animation<double> animation) {
+                          // Faker faker = new Faker();
+                          return firendRow(snapshot.data['data'][index]);
+                        },
+                      )
+                    ],
+                  );
+                },
               );
-            },
-          )
+            })
         : ListView();
   }
 
-  Widget firendRow(Faker faker) {
+  Widget firendRow(Map user) {
     return Container(
         key: UniqueKey(),
         height: 60,
@@ -169,7 +180,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
                 child: CircleAvatar(
                   maxRadius: 25.0,
                   backgroundColor: Colors.blueGrey,
-                  backgroundImage: NetworkImage(faker.image.image()),
+                  // backgroundImage: NetworkImage(faker.image.image()),
                 )),
             Expanded(
                 flex: 6,
@@ -178,14 +189,14 @@ class _MainGroupListPageMobile extends StatelessWidget {
                     Container(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(faker.person.name(),
+                      child: Text(user['name'],
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 20)),
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(faker.conference.name(),
+                      child: Text('',
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 14)),

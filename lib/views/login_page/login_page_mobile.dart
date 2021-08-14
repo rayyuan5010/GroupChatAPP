@@ -25,7 +25,12 @@ class _LoginPageMobile extends StatelessWidget {
       passwordValidator: viewModel.passwordValidator,
       onLogin: viewModel.authUser,
       onSignup: viewModel.signup,
-      onSubmitAnimationCompleted: () => viewModel.onComplete(context),
+      onSubmitAnimationCompleted: () {
+        // viewModel.notifyListeners();
+        // viewModel.dispose();
+
+        RootPageController.rootPageViewModel.notifyListeners();
+      },
       onRecoverPassword: viewModel.recoverPassword,
     );
   }

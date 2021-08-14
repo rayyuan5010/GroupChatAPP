@@ -1,5 +1,7 @@
 library root_page_view;
 
+import 'package:group_chat/other/auth.dart';
+import 'package:group_chat/other/rootController.dart';
 import 'package:group_chat/views/check_login_page/check_login_page_view.dart';
 import 'package:group_chat/views/login_page/login_page_view.dart';
 import 'package:group_chat/views/main_group_list_page/main_group_list_page_view.dart';
@@ -17,9 +19,11 @@ class RootPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RootPageViewModel viewModel = RootPageViewModel();
+
     return ViewModelProvider<RootPageViewModel>.withConsumer(
       viewModel: viewModel,
       onModelReady: (viewModel) {
+        RootPageController.rootPageViewModel = viewModel;
         viewModel.checkLoginStaus();
       },
       builder: (context, viewModel, child) {
