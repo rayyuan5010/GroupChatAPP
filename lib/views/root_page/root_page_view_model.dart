@@ -16,6 +16,7 @@ class RootPageViewModel extends BaseViewModel {
     if (user == null) {
       Authentication.status = LoginStatus.noSingIn;
     } else {
+      Authentication.user = user;
       Authentication.status = LoginStatus.signIn;
     }
     notifyListeners();

@@ -14,7 +14,7 @@ dependencies:
     get_it: ^3.0.3
     equatable: ^2.0.0
     provider_architecture: ^1.1.1+1
-    firebase_core: ^1.0.2
+    # firebase_core: ^1.0.2
     flutter_login: ^1.0.15
     progress_state_button: ^1.0.2
     flutter_signin_button: ^1.1.0

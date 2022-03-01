@@ -54,14 +54,14 @@ class _MainGroupListPageMobile extends StatelessWidget {
                   Container(height: 20),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Rayyuan',
+                    child: Text(Authentication.user.name,
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 20)),
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(Authentication.user.id,
+                    child: Text(Authentication.user.userSM,
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 14)),
@@ -126,39 +126,40 @@ class _MainGroupListPageMobile extends StatelessWidget {
         ? FutureBuilder<dynamic>(
             future: viewModel.getGroup(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.none &&
-                  snapshot.hasData == null) {
+              if (snapshot.connectionState != ConnectionState.done &&
+                  snapshot.data == null) {
                 //print('project snapshot data is: ${projectSnap.data}');
                 return Container();
               }
-              print(snapshot.data);
-              print(snapshot.data["dataCount"]);
+
               return LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   return CustomScrollView(
                     slivers: [
                       SliverPersistentHeader(
-                        delegate: SectionHeaderDelegate("好友"),
+                        delegate: SectionHeaderDelegate(
+                            "好友 ${snapshot.data["friendCount"]}"),
                         pinned: true,
                       ),
                       SliverAnimatedList(
-                        initialItemCount: 0,
+                        initialItemCount: snapshot.data["friendCount"],
                         itemBuilder: (BuildContext context, int index,
                             Animation<double> animation) {
                           // Faker faker = new Faker();
-                          return firendRow({});
+                          return firendRow(snapshot.data['friendList'][index]);
                         },
                       ),
                       SliverPersistentHeader(
-                        delegate: SectionHeaderDelegate("群組"),
+                        delegate: SectionHeaderDelegate(
+                            "群組 ${snapshot.data["groupCount"]}"),
                         pinned: true,
                       ),
                       SliverAnimatedList(
-                        initialItemCount: snapshot.data["dataCount"],
+                        initialItemCount: snapshot.data["groupCount"],
                         itemBuilder: (BuildContext context, int index,
                             Animation<double> animation) {
                           // Faker faker = new Faker();
-                          return firendRow(snapshot.data['data'][index]);
+                          return groupRow(snapshot.data['groupList'][index]);
                         },
                       )
                     ],
@@ -196,13 +197,41 @@ class _MainGroupListPageMobile extends StatelessWidget {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('',
+                      child: Text(user['userSM'],
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 14)),
                     )
                   ],
                 )),
+            Expanded(flex: 2, child: Container())
+          ],
+        ));
+  }
+
+  Widget groupRow(Map user) {
+    return Container(
+        key: UniqueKey(),
+        height: 60,
+        child: Row(
+          children: [
+            Expanded(
+                flex: 2,
+                child: CircleAvatar(
+                  maxRadius: 25.0,
+                  backgroundColor: Colors.blueGrey,
+                  // backgroundImage: NetworkImage(faker.image.image()),
+                )),
+            Expanded(
+              flex: 6,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(user['name'],
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 20)),
+              ),
+            ),
             Expanded(flex: 2, child: Container())
           ],
         ));

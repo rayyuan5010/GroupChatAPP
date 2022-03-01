@@ -115,6 +115,9 @@ class _MessagePageMobile extends StatelessWidget {
                         )),
                   ),
                   Container(
+                    height: 10,
+                  ),
+                  Container(
                     height: viewModel.showForBottom(constraints.maxHeight),
                     child: ListView.separated(
                       itemCount: 3,

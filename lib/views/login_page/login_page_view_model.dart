@@ -22,7 +22,36 @@ class LoginPageViewModel extends BaseViewModel {
 
   Future<String> authUser(LoginData data) async {
     print('Name: ${data.name}, Password: ${data.password}');
-    try {} catch (e) {
+    try {
+      DBHelper dbHelper = new DBHelper();
+      Database database = await dbHelper.db;
+      // dbHelper.checkLogin();
+
+      APIReturn resp = await NetWorkAPI.userLogin(data.name, data.password);
+      if (resp.status) {
+        DBHelper dbHelper = new DBHelper();
+        Database database = await dbHelper.db;
+
+        Authentication.status = LoginStatus.signIn;
+        print(resp.data);
+        Authentication.user = User(
+            id: resp.data['id'],
+            account: resp.data['email'],
+            name: resp.data['name'],
+            password: resp.data['password'],
+            firendCode: resp.data['friend'],
+            userSM: resp.data['userSM']);
+        await database.insert(
+          'tb_userInfo',
+          Authentication.user.toMap(),
+        );
+        Authentication.status = LoginStatus.signIn;
+        return null;
+      } else {
+        return resp.message;
+      }
+    } catch (e) {
+      print(e.toString());
       return e.toString();
     }
   }
@@ -36,13 +65,18 @@ class LoginPageViewModel extends BaseViewModel {
         DBHelper dbHelper = new DBHelper();
         Database database = await dbHelper.db;
 
-        Authentication.status = LoginStatus.signIn;
         Authentication.user = User(
-            id: resp.data['id'], account: data.name, password: data.password);
+            id: resp.data['id'],
+            account: resp.data['email'],
+            name: resp.data['name'],
+            password: resp.data['password'],
+            firendCode: resp.data['friend'],
+            userSM: resp.data['userSM']);
         await database.insert(
           'tb_userInfo',
           Authentication.user.toMap(),
         );
+        Authentication.status = LoginStatus.signIn;
         return null;
       } else {
         return resp.message;

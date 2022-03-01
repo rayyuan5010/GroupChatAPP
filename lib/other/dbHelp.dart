@@ -23,7 +23,7 @@ class DBHelper {
 
   _onCreate(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE tb_userInfo (id TEXT PRIMARY KEY, account TEXT , password TEXT ,firendCode TEXT ,name TEXT ,image TEXT)');
+        'CREATE TABLE tb_userInfo (id TEXT PRIMARY KEY, account TEXT , password TEXT ,firendCode TEXT ,name TEXT,userSM TEXT ,image TEXT)');
 
     // await db.insert('tb_setting', {"title": "account", "data": ""});
     // await db.insert('tb_setting', {"title": "account", "data": ""});
