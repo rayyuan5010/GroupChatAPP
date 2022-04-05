@@ -18,8 +18,8 @@ class MessageListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenTypeLayout(
       mobile: _MessageListMobile(children: children, controller: controller),
-      desktop: _MessageListMobile(),
-      tablet: _MessageListMobile(),
+      desktop: _MessageListMobile(children: children, controller: controller),
+      tablet: _MessageListMobile(children: children, controller: controller),
     );
   }
 }
