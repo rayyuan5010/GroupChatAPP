@@ -1,6 +1,7 @@
 library talk_list_view;
 
 import 'package:faker/faker.dart';
+import 'package:group_chat/model/friend.dart';
 import 'package:group_chat/views/message_page/message_page_view.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';

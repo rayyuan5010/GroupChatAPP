@@ -61,7 +61,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(Authentication.user.userSM,
+                    child: Text(Authentication.user.userSM ?? "",
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 14)),
@@ -145,8 +145,23 @@ class _MainGroupListPageMobile extends StatelessWidget {
                         initialItemCount: snapshot.data["friendCount"],
                         itemBuilder: (BuildContext context, int index,
                             Animation<double> animation) {
+                          Friend _friend = Friend.fromMap(
+                              snapshot.data['friendList'][index]);
                           // Faker faker = new Faker();
-                          return firendRow(snapshot.data['friendList'][index]);
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MessagePageView(
+                                          group: null,
+                                          friend: _friend,
+                                          isGroupChat: false,
+                                        )),
+                              );
+                            },
+                            child: firendRow(_friend),
+                          );
                         },
                       ),
                       SliverPersistentHeader(
@@ -158,8 +173,21 @@ class _MainGroupListPageMobile extends StatelessWidget {
                         initialItemCount: snapshot.data["groupCount"],
                         itemBuilder: (BuildContext context, int index,
                             Animation<double> animation) {
-                          // Faker faker = new Faker();
-                          return groupRow(snapshot.data['groupList'][index]);
+                          Group _group =
+                              Group.fromMap(snapshot.data['groupList'][index]);
+                          return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MessagePageView(
+                                            friend: null,
+                                            group: _group,
+                                            isGroupChat: true,
+                                          )),
+                                );
+                              },
+                              child: groupRow(_group));
                         },
                       )
                     ],
@@ -170,7 +198,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
         : ListView();
   }
 
-  Widget firendRow(Map user) {
+  Widget firendRow(Friend _friend) {
     return Container(
         key: UniqueKey(),
         height: 60,
@@ -190,14 +218,14 @@ class _MainGroupListPageMobile extends StatelessWidget {
                     Container(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(user['name'],
+                      child: Text(_friend.name,
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 20)),
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(user['userSM'],
+                      child: Text(_friend.userSM,
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 14)),
@@ -209,7 +237,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
         ));
   }
 
-  Widget groupRow(Map user) {
+  Widget groupRow(Group _group) {
     return Container(
         key: UniqueKey(),
         height: 60,
@@ -226,7 +254,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
               flex: 6,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(user['name'],
+                child: Text(_group.name,
                     textAlign: TextAlign.left,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 20)),

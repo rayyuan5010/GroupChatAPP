@@ -1,7 +1,7 @@
 part of google_map_widget;
 
 // ignore: must_be_immutable
-class _GoogleMapMobile extends StatelessWidget {
+class _GoogleMapMobile extends StatefulWidget {
   _GoogleMapMobile({@required this.onFinished, @required this.markers});
   final Function(Completer<GoogleMapController>) onFinished;
   Completer<GoogleMapController> mapController = Completer();
@@ -10,18 +10,30 @@ class _GoogleMapMobile extends StatelessWidget {
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
+
+  @override
+  State<_GoogleMapMobile> createState() => _GoogleMapMobileState();
+}
+
+class _GoogleMapMobileState extends State<_GoogleMapMobile>
+    with AutomaticKeepAliveClientMixin {
+  //
+
   @override
   Widget build(BuildContext context) {
     return new GoogleMap(
       myLocationButtonEnabled: false,
-      mapType: MapType.hybrid,
-      initialCameraPosition: kGooglePlex,
+      mapType: MapType.normal,
+      initialCameraPosition: widget.kGooglePlex,
       onMapCreated: (GoogleMapController controller) {
-        mapController.complete(controller);
+        widget.mapController.complete(controller);
         // getCurrentPosition(context);
-        onFinished(mapController);
+        widget.onFinished(widget.mapController);
       },
-      markers: markers,
+      markers: widget.markers,
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -71,7 +71,11 @@ class _TalkListMobile extends StatelessWidget {
                 itemCount: 30,
                 itemBuilder: (BuildContext context, int index) {
                   Faker faker = new Faker();
-                  return firendRow(faker, context);
+                  Friend _friend = Friend(
+                      id: viewModel.getRandomString(20),
+                      name: faker.person.name(),
+                      image: faker.image.image());
+                  return firendRow(_friend, context);
                 },
               );
             },
@@ -79,14 +83,16 @@ class _TalkListMobile extends StatelessWidget {
         : ListView();
   }
 
-  Widget firendRow(Faker faker, BuildContext context) {
-    return GestureDetector(
+  Widget firendRow(Friend _friend, BuildContext context) {
+    return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => MessagePageView(
-                    title: faker.person.name(),
+                    friend: _friend,
+                    group: null,
+                    isGroupChat: false,
                   )),
         );
       },
@@ -109,14 +115,14 @@ class _TalkListMobile extends StatelessWidget {
                       Container(height: 10),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(faker.person.name(),
+                        child: Text(_friend.name,
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 20)),
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(faker.conference.name(),
+                        child: Text(_friend.userSM,
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 14)),
