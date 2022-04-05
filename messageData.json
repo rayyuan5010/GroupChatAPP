@@ -1,0 +1,12 @@
+{
+    "senderId":"id",
+    "senderName":"name",
+    "senderImage":"image",
+    "to":"",
+    "reciveType":"",
+    "messageId":"",
+    "messageType":"",
+    "messageTime":"",
+    "messageContent":"",
+    "messageTabId":""
+}

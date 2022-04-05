@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1043077299115-c0rk95jpu2rppf5c4haeick0ln0ibi0e.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1043077299115-c0rk95jpu2rppf5c4haeick0ln0ibi0e</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCEQSmM8zAxIUNaRzacJj7isxC5TzFMUkE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1043077299115</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.rayyuan.groupChat</string>
+	<key>PROJECT_ID</key>
+	<string>groupchat-2ba1a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>groupchat-2ba1a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1043077299115:ios:69ac627469ed915d90f0ee</string>
+	<key>DATABASE_URL</key>
+	<string>https://groupchat-2ba1a-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
