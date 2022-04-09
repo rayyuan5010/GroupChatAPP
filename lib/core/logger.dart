@@ -10,7 +10,7 @@ class SimpleLogPrinter extends LogPrinter {
   @override
   void log(LogEvent event) {
     prefix0.log(
-      event.message,
+      "${event.message}",
       time: DateTime.now(),
       level: () {
         switch (event.level) {

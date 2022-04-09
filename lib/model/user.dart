@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:group_chat/core/logger.dart';
+import 'package:group_chat/other/dbHelp.dart';
+import 'package:sqflite/sqflite.dart';
 
 class User {
   User(
@@ -16,6 +19,7 @@ class User {
   String image;
   String userSM;
   String firendCode;
+  static final String _tableName = "tb_userInfo";
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       "id": id,
@@ -37,5 +41,36 @@ class User {
     this.name = map['name'];
     this.image = map['image'];
     this.firendCode = map['firendCode'];
+  }
+  static createTable(Database db) async {
+    var result = await db
+        .query('sqlite_master', where: 'name = ?', whereArgs: [_tableName]);
+    if (result.isEmpty) {
+      await DBHelper().createTable(
+        tableName: _tableName,
+        columns: {
+          "id": "TEXT  PRIMARY KEY",
+          "account": "TEXT",
+          "password": "TEXT",
+          "userSM": "TEXT",
+          "name": "TEXT",
+          "image": "TEXT",
+          "firendCode": "TEXT",
+        },
+      );
+    } else {
+      getLogger("Group").e("table exist");
+    }
+  }
+
+  static dropTable(Database db) async {
+    var result = await db
+        .query('sqlite_master', where: 'name = ?', whereArgs: [_tableName]);
+    if (result.isNotEmpty) {
+      await db.execute("DROP TABLE $_tableName");
+    } else {
+      return false;
+    }
+    return true;
   }
 }

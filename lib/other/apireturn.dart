@@ -13,10 +13,20 @@ class APIReturn {
   int dataCount;
   String code;
   APIReturn.fromMap(Map<String, dynamic> map) {
-    this.status = map['status'];
+    this.status = true;
     this.message = map['message'];
     this.data = map['data'];
     this.dataCount = map['dataCount'];
     this.code = map['code'];
+  }
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      "status": status,
+      "message": message,
+      "data": data,
+      "dataCount": dataCount,
+      "code": code,
+    };
+    return map;
   }
 }

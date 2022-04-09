@@ -7,7 +7,7 @@ import 'package:group_chat/model/user.dart';
 import 'package:group_chat/other/apireturn.dart';
 import 'package:group_chat/other/auth.dart';
 import 'package:group_chat/other/dbHelp.dart';
-import 'package:group_chat/other/groupChatSDK.dart';
+import 'package:group_chat/other/NetWorkAPI.dart';
 import 'package:group_chat/other/rootController.dart';
 import 'package:group_chat/views/main_group_list_page/main_group_list_page_view.dart';
 import 'package:group_chat/views/root_page/root_page_view_model.dart';

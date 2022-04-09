@@ -25,7 +25,7 @@ class _StikerMessageMobile extends StatelessWidget {
             child: SizedBox(
               width: 150,
               height: 150,
-              child: Image.network(this.message.messageContent.content),
+              child: Image.network(this.message.messageDetail.content),
             ),
           ),
         ),

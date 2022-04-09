@@ -27,7 +27,7 @@ class _TextMessageMobile extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(this.message.messageContent.content,
+            child: Text(this.message.messageDetail.content,
                 style: TextStyle(fontSize: 14)),
           ),
         ),
@@ -65,7 +65,7 @@ class _TextMessageMobile extends StatelessWidget {
                   constraints: BoxConstraints(maxWidth: 250, maxHeight: 400),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(message.messageContent.content,
+                    child: Text(message.messageDetail.content,
                         style: TextStyle(fontSize: 14)),
                   ),
                 ),
@@ -77,7 +77,7 @@ class _TextMessageMobile extends StatelessWidget {
                   width: 50,
                   child: Text(
                       DateFormat('HH:mm')
-                          .format(message.messageContent.reciveTime),
+                          .format(message.messageDetail.reciveTime),
                       style: TextStyle(fontSize: 10, color: Colors.black)),
                 ),
               ),

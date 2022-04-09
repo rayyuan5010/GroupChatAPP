@@ -6,31 +6,31 @@ class _MessageMobile extends StatelessWidget {
   User user = Authentication.user;
   @override
   Widget build(BuildContext context) {
-    switch (message.messageContent.messageType) {
+    switch (message.messageType) {
       case MessageType.TEXT:
         return TextMessageWidget(
-            message: message, self: user.id == message.messageSender.id);
+            message: message, self: user.id == message.senderId);
       case MessageType.STIKER:
         return StikerMessageWidget(
-            message: message, self: user.id == message.messageSender.id);
+            message: message, self: user.id == message.senderId);
       case MessageType.IMAGE:
         return ImageMessageWidget(
-            message: message, self: user.id == message.messageSender.id);
+            message: message, self: user.id == message.senderId);
       case MessageType.FILE:
         return TextMessageWidget(
-            message: message, self: user.id == message.messageSender.id);
+            message: message, self: user.id == message.senderId);
       case MessageType.MAPMARKER:
         return TextMessageWidget(
-            message: message, self: user.id == message.messageSender.id);
+            message: message, self: user.id == message.senderId);
       case MessageType.MAPPATH:
         return TextMessageWidget(
-            message: message, self: user.id == message.messageSender.id);
+            message: message, self: user.id == message.senderId);
       case MessageType.DRAW:
         return TextMessageWidget(
-            message: message, self: user.id == message.messageSender.id);
+            message: message, self: user.id == message.senderId);
       default:
         return TextMessageWidget(
-            message: message, self: user.id == message.messageSender.id);
+            message: message, self: user.id == message.senderId);
     }
   }
 }

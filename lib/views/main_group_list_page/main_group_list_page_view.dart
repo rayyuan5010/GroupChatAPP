@@ -3,8 +3,11 @@ library main_group_list_page_view;
 import 'package:faker/faker.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:group_chat/core/logger.dart';
 import 'package:group_chat/model/friend.dart';
 import 'package:group_chat/model/group.dart';
+import 'package:group_chat/other/NetWorkAPI.dart';
+import 'package:group_chat/other/apireturn.dart';
 import 'package:group_chat/other/auth.dart';
 import 'package:group_chat/views/message_page/message_page_view.dart';
 import 'package:provider_architecture/provider_architecture.dart';
@@ -23,6 +26,7 @@ class MainGroupListPageView extends StatelessWidget {
     return ViewModelProvider<MainGroupListPageViewModel>.withConsumer(
       onModelReady: (viewModel) {
         // Do something once your viewModel is initialized
+        // NetWorkAPI.getGroup();
       },
       builder: (context, viewModel, child) {
         return ScreenTypeLayout(

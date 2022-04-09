@@ -1,6 +1,6 @@
 library stiker_message_widget;
 
-import 'package:group_chat/other/message.dart';
+import 'package:group_chat/model/message.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
 

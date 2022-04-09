@@ -154,7 +154,7 @@ class _MessagePageMobile extends StatelessWidget {
                         child: IconButton(
                           onPressed: () async {
                             var time = DateTime.now().millisecondsSinceEpoch;
-                            viewModel.messageList.add(Message({
+                            viewModel.messageList.add(Message.fromMap({
                               "senderId": Authentication.user.id,
                               "senderName": "name",
                               "senderImage": "image",

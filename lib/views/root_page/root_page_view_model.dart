@@ -2,7 +2,7 @@ import 'package:group_chat/core/base/base_view_model.dart';
 import 'package:group_chat/model/user.dart';
 import 'package:group_chat/other/auth.dart';
 import 'package:group_chat/other/dbHelp.dart';
-import 'package:group_chat/other/groupChatSDK.dart';
+import 'package:group_chat/other/NetWorkAPI.dart';
 
 class RootPageViewModel extends BaseViewModel {
   RootPageViewModel();

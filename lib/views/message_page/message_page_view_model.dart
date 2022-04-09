@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:group_chat/core/base/base_view_model.dart';
-import 'package:group_chat/other/message.dart';
+import 'package:group_chat/model/message.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MessagePageViewModel extends BaseViewModel {

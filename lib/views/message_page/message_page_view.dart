@@ -9,13 +9,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:group_chat/model/friend.dart';
 import 'package:group_chat/model/group.dart';
 import 'package:group_chat/other/auth.dart';
-import 'package:group_chat/other/message.dart';
+import 'package:group_chat/model/message.dart';
 import 'package:group_chat/widgets/message/message_widget.dart';
 import 'package:group_chat/widgets/message_list/message_list_widget.dart';
 
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import '../../other/message.dart';
+import '../../model/message.dart';
 import '../../widgets/google_map/google_map_widget.dart';
 import 'message_page_view_model.dart';
 

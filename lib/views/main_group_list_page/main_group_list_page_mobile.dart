@@ -123,77 +123,84 @@ class _MainGroupListPageMobile extends StatelessWidget {
 
   Widget _listView() {
     return viewModel.controller.text == ""
-        ? FutureBuilder<dynamic>(
-            future: viewModel.getGroup(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState != ConnectionState.done &&
+        ? FutureBuilder<APIReturn>(
+            future: NetWorkAPI.getGroup(),
+            builder: (BuildContext context, AsyncSnapshot<APIReturn> snapshot) {
+              if (snapshot.connectionState != ConnectionState.done ||
                   snapshot.data == null) {
                 //print('project snapshot data is: ${projectSnap.data}');
                 return Container();
-              }
-
-              return LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return CustomScrollView(
-                    slivers: [
-                      SliverPersistentHeader(
-                        delegate: SectionHeaderDelegate(
-                            "好友 ${snapshot.data["friendCount"]}"),
-                        pinned: true,
-                      ),
-                      SliverAnimatedList(
-                        initialItemCount: snapshot.data["friendCount"],
-                        itemBuilder: (BuildContext context, int index,
-                            Animation<double> animation) {
-                          Friend _friend = Friend.fromMap(
-                              snapshot.data['friendList'][index]);
-                          // Faker faker = new Faker();
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MessagePageView(
-                                          group: null,
-                                          friend: _friend,
-                                          isGroupChat: false,
-                                        )),
+              } else {
+                // print(snapshot.data);
+                // getLogger("MainGroupListPage").d(snapshot.data.toMap());
+                if (snapshot.data.status) {
+                  return LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      return CustomScrollView(
+                        slivers: [
+                          SliverPersistentHeader(
+                            delegate: SectionHeaderDelegate(
+                                "好友 ${snapshot.data.data["friendCount"]}"),
+                            pinned: true,
+                          ),
+                          SliverAnimatedList(
+                            initialItemCount: snapshot.data.data["friendCount"],
+                            itemBuilder: (BuildContext context, int index,
+                                Animation<double> animation) {
+                              Friend _friend = Friend.fromMap(
+                                  snapshot.data.data['friendList'][index]);
+                              // Faker faker = new Faker();
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MessagePageView(
+                                              group: null,
+                                              friend: _friend,
+                                              isGroupChat: false,
+                                            )),
+                                  );
+                                },
+                                child: firendRow(_friend),
                               );
                             },
-                            child: firendRow(_friend),
-                          );
-                        },
-                      ),
-                      SliverPersistentHeader(
-                        delegate: SectionHeaderDelegate(
-                            "群組 ${snapshot.data["groupCount"]}"),
-                        pinned: true,
-                      ),
-                      SliverAnimatedList(
-                        initialItemCount: snapshot.data["groupCount"],
-                        itemBuilder: (BuildContext context, int index,
-                            Animation<double> animation) {
-                          Group _group =
-                              Group.fromMap(snapshot.data['groupList'][index]);
-                          return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MessagePageView(
-                                            friend: null,
-                                            group: _group,
-                                            isGroupChat: true,
-                                          )),
-                                );
-                              },
-                              child: groupRow(_group));
-                        },
-                      )
-                    ],
+                          ),
+                          SliverPersistentHeader(
+                            delegate: SectionHeaderDelegate(
+                                "群組 ${snapshot.data.data["groupCount"]}"),
+                            pinned: true,
+                          ),
+                          SliverAnimatedList(
+                            initialItemCount: snapshot.data.data["groupCount"],
+                            itemBuilder: (BuildContext context, int index,
+                                Animation<double> animation) {
+                              Group _group = Group.fromMap(
+                                  snapshot.data.data['groupList'][index]);
+                              return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MessagePageView(
+                                                friend: null,
+                                                group: _group,
+                                                isGroupChat: true,
+                                              )),
+                                    );
+                                  },
+                                  child: groupRow(_group));
+                            },
+                          )
+                        ],
+                      );
+                    },
                   );
-                },
-              );
+                } else {
+                  return Container();
+                }
+              }
             })
         : ListView();
   }

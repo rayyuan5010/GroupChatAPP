@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:group_chat/model/friend.dart';
+import 'package:group_chat/model/group.dart';
 import 'package:group_chat/model/user.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io' as io;
@@ -17,16 +20,46 @@ class DBHelper {
   initDatabase() async {
     io.Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentDirectory.path, 'main.db');
-    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
+    var db = await openDatabase(path,
+        version: 1, onCreate: _onCreate, onUpgrade: _onUpgrade);
     return db;
   }
 
-  _onCreate(Database db, int version) async {
-    await db.execute(
-        'CREATE TABLE tb_userInfo (id TEXT PRIMARY KEY, account TEXT , password TEXT ,firendCode TEXT ,name TEXT,userSM TEXT ,image TEXT)');
+  _onUpgrade(Database db, int version, int version2) async {
+    await Friend.dropTable(db);
+    await Group.dropTable(db);
+    await User.dropTable(db);
 
-    // await db.insert('tb_setting', {"title": "account", "data": ""});
-    // await db.insert('tb_setting', {"title": "account", "data": ""});
+    await Friend.createTable(db);
+    await Group.createTable(db);
+    await User.createTable(db);
+  }
+
+  _onCreate(Database db, int version) async {
+    await Friend.createTable(db);
+    await Group.createTable(db);
+    await User.createTable(db);
+  }
+
+  Future createTable(
+      {@required String tableName, @required Map columns}) async {
+    String columnsSQL = "";
+    columns.forEach((key, value) {
+      columnsSQL += "$key $value ,";
+    });
+    columnsSQL += "createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,";
+    columnsSQL += "updatedAt DATETIME,";
+    columnsSQL += "deletedAt DATETIME";
+
+    // columnsSQL = columnsSQL.substring(0, columnsSQL.length - 1);
+
+    String sql = "CREATE TABLE $tableName ($columnsSQL)";
+    try {
+      await _db.execute(sql);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<User> checkLogin() async {
