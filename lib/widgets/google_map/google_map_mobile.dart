@@ -22,6 +22,7 @@ class _GoogleMapMobileState extends State<_GoogleMapMobile>
   @override
   Widget build(BuildContext context) {
     return new GoogleMap(
+      myLocationEnabled: true,
       myLocationButtonEnabled: false,
       mapType: MapType.normal,
       initialCameraPosition: widget.kGooglePlex,

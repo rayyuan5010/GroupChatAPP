@@ -7,7 +7,7 @@ class Message {
   Message(
       {@required this.senderId,
       @required this.senderName,
-      @required this.to,
+      @required this.reciver,
       @required this.reciveType,
       @required this.messageId,
       @required this.messageType,
@@ -18,8 +18,9 @@ class Message {
     Map messageRowData = {
       "senderId": senderId,
       "senderName": senderName,
-      "to": to,
+      "reciver": reciver,
       "reciveType": reciveType,
+      "messageContent": messageContent,
       "messageId": messageId,
       "messageType": messageType,
       "messageTime": messageTime,
@@ -32,11 +33,11 @@ class Message {
   static String _tableName = "tb_message";
   String senderId;
   String senderName;
-  String to;
-  ReciveType reciveType;
+  String reciver;
+  int reciveType;
   String messageId;
-  MessageType messageType;
-  String messageTime;
+  int messageType;
+  int messageTime;
   String messageContent;
   String messageTabId;
   String groupId;
@@ -46,8 +47,9 @@ class Message {
     var map = <String, dynamic>{
       "senderId": messageSender.id,
       "senderName": messageSender.name,
-      "to": messageDetail.to,
+      "reciver": messageDetail.reciver,
       "reciveType": messageDetail.reciveType,
+      "messageContent": messageContent,
       "messageId": messageDetail.id,
       "messageType": messageDetail.messageType,
       "messageTime": messageDetail.reciveTime,
@@ -60,9 +62,10 @@ class Message {
   Message.fromMap(Map<String, dynamic> map) {
     this.senderId = map["senderId"];
     this.senderName = map["senderName"];
-    this.to = map["to"];
+    this.reciver = map["reciver"];
     this.reciveType = map["reciveType"];
     this.messageId = map["messageId"];
+    this.messageContent = map["messageContent"];
     this.messageType = map["messageType"];
     this.messageTime = map["messageTime"];
     this.messageTabId = map["messageTabId"];
@@ -70,10 +73,11 @@ class Message {
     Map messageRowData = {
       "senderId": this.senderId,
       "senderName": this.senderName,
-      "to": this.to,
+      "reciver": this.reciver,
       "reciveType": this.reciveType,
       "messageId": this.messageId,
       "messageType": this.messageType,
+      "messageContent": this.messageContent,
       "messageTime": this.messageTime,
       "messageTabId": this.messageTabId,
       "groupId": this.groupId,
@@ -86,14 +90,16 @@ class Message {
         .query('sqlite_master', where: 'name = ?', whereArgs: [_tableName]);
     if (result.isEmpty) {
       await DBHelper().createTable(
+        db: db,
         tableName: _tableName,
         columns: {
           "senderId": "TEXT",
           "senderName": "TEXT",
-          "to": "TEXT",
-          "reciveType": "TEXT",
+          "reciver": "TEXT",
+          "reciveType": "INTEGER",
           "messageId": "TEXT  PRIMARY KEY",
-          "messageType": "TEXT",
+          "messageContent": "TEXT",
+          "messageType": "INTEGER",
           "messageTime": "DATETIME",
           "messageTabId": "TEXT",
           "groupId": "TEXT",
@@ -137,7 +143,7 @@ class MessageDetail {
   String content;
   String tabId;
   ReciveType reciveType;
-  List<String> to;
+  List<String> reciver;
   // Map messageRowData;
   // dynamic messageData;
 
@@ -152,8 +158,8 @@ class MessageDetail {
     this.messageType = MessageType.values[rd['messageType']];
 
     this.reciveType = ReciveType.values[rd['reciveType']];
-    if (rd['to'] != '') {
-      this.to = List.from(rd['to']);
+    if (rd['reciver'] != '') {
+      this.reciver = List.from(rd['reciver']);
     }
   }
 }

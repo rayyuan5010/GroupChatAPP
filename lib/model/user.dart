@@ -47,6 +47,7 @@ class User {
         .query('sqlite_master', where: 'name = ?', whereArgs: [_tableName]);
     if (result.isEmpty) {
       await DBHelper().createTable(
+        db: db,
         tableName: _tableName,
         columns: {
           "id": "TEXT  PRIMARY KEY",

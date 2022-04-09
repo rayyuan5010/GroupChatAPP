@@ -32,8 +32,8 @@ class _MessagePageMobile extends StatelessWidget {
           height: constraints.maxHeight,
           child: Column(
             children: [
-              Expanded(
-                flex: 45,
+              Container(
+                height: 300,
                 child: Container(
                   width: constraints.maxWidth,
                   child: Container(
@@ -90,15 +90,15 @@ class _MessagePageMobile extends StatelessWidget {
                                                 position.longitude),
                                             zoom: 14.4746,
                                           )));
-                                          viewModel.markers = {
-                                            Marker(
-                                              markerId: MarkerId("marker_1"),
-                                              position: LatLng(
-                                                  position.latitude,
-                                                  position.longitude),
-                                            )
-                                          };
-                                          //viewModel.notifyListeners();
+                                          // viewModel.markers = {
+                                          //   Marker(
+                                          //     markerId: MarkerId("marker_1"),
+                                          //     position: LatLng(
+                                          //         position.latitude,
+                                          //         position.longitude),
+                                          //   )
+                                          // };
+                                          // viewModel.notifyListeners();
                                         },
                                         markers: viewModel.markers),
                                     Container()
@@ -158,7 +158,7 @@ class _MessagePageMobile extends StatelessWidget {
                               "senderId": Authentication.user.id,
                               "senderName": "name",
                               "senderImage": "image",
-                              "to": "",
+                              "reciver": "",
                               "reciveType": 0,
                               "messageId": "${Authentication.user.id}-${time}",
                               "messageType": 0,

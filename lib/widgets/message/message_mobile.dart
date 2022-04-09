@@ -6,7 +6,7 @@ class _MessageMobile extends StatelessWidget {
   User user = Authentication.user;
   @override
   Widget build(BuildContext context) {
-    switch (message.messageType) {
+    switch (message.messageDetail.messageType) {
       case MessageType.TEXT:
         return TextMessageWidget(
             message: message, self: user.id == message.senderId);

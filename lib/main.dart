@@ -1,5 +1,6 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'package:group_chat/other/dbHelp.dart';
 import 'package:group_chat/views/root_page/root_page_view.dart';
 
 import 'core/locator.dart';
@@ -15,7 +16,8 @@ void main() async {
   // await FirebaseAuth.instance.useEmulator('http://localhost:9099');
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
+  DBHelper dbHelper = new DBHelper();
+  dbHelper.initDatabase();
   runApp(MainApplication());
 }
 

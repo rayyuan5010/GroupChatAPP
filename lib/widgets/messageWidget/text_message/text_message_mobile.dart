@@ -27,7 +27,7 @@ class _TextMessageMobile extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(this.message.messageDetail.content,
+            child: Text(this.message.messageDetail.content ?? "",
                 style: TextStyle(fontSize: 14)),
           ),
         ),

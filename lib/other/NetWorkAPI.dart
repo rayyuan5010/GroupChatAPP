@@ -10,7 +10,12 @@ class NetWorkAPI {
       Map<String, dynamic> data, String url) async {
     Response response;
     var dio = Dio();
-    data.addAll({"AuthID": Authentication.user.id});
+    if (Authentication.user != null) {
+      data.addAll({"AuthID": Authentication.user.id});
+    } else {
+      data.addAll({"AuthID": null});
+    }
+
     var formData = FormData.fromMap(data);
     response =
         await dio.post('http://${Config.serverIP}/api$url', data: formData);

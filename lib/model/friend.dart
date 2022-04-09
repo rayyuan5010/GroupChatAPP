@@ -35,10 +35,12 @@ class Friend {
     this.isFriend = map['isFriend'] ?? true;
   }
   static createTable(Database db) async {
+    print("create friend table");
     var result = await db
         .query('sqlite_master', where: 'name = ?', whereArgs: [_tableName]);
     if (result.isEmpty) {
       await DBHelper().createTable(
+        db: db,
         tableName: _tableName,
         columns: {
           "id": "TEXT  PRIMARY KEY",
