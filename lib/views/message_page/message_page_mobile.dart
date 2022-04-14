@@ -2,8 +2,10 @@ part of message_page_view;
 
 class _MessagePageMobile extends StatelessWidget {
   final MessagePageViewModel viewModel;
-
-  _MessagePageMobile(this.viewModel);
+  final Friend friend;
+  final Group group;
+  final bool isGroupChat;
+  _MessagePageMobile(this.viewModel, this.friend, this.group, this.isGroupChat);
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +156,8 @@ class _MessagePageMobile extends StatelessWidget {
                         child: IconButton(
                           onPressed: () async {
                             var time = DateTime.now().millisecondsSinceEpoch;
+                            String message =
+                                viewModel.sendMessageController.text;
                             viewModel.messageList.add(Message.fromMap({
                               "senderId": Authentication.user.id,
                               "senderName": "name",
@@ -163,10 +167,13 @@ class _MessagePageMobile extends StatelessWidget {
                               "messageId": "${Authentication.user.id}-${time}",
                               "messageType": 0,
                               "messageTime": time,
-                              "messageContent":
-                                  viewModel.sendMessageController.text,
+                              "messageContent": message,
                               "messageTabId": ""
                             }));
+                            NetWorkAPI.sendMessage(
+                              isGroupChat ? group.id : friend.id,
+                              message,
+                            );
                             viewModel.sendMessageController.clear();
                             viewModel.notifyListeners();
                             await Future.delayed(

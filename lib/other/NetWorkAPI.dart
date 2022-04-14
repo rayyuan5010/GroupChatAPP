@@ -21,7 +21,7 @@ class NetWorkAPI {
         await dio.post('http://${Config.serverIP}/api$url', data: formData);
     getLogger("NetWorkAPI").d(response.statusCode);
     if (response.statusCode == 200) {
-      // print(response.data);
+      print(response.data);
       return APIReturn.fromMap(response.data);
     } else {
       return APIReturn(status: false, message: 'server error');
@@ -40,5 +40,16 @@ class NetWorkAPI {
     return _sendHTTP({'userId': Authentication.user.id}, "/mixData/get");
   }
 
-  static Future<APIReturn> sendMessage() {}
+  static Future<APIReturn> updateToken(String token) async {
+    return _sendHTTP({'token': token}, "/user/token/update");
+  }
+
+  static Future<APIReturn> sendMessage(String receiverId, String message,
+      {bool group = false}) {
+    return _sendHTTP({
+      "receiverId": receiverId,
+      "message": message,
+      "senderId": Authentication.user.id
+    }, "/message/insert");
+  }
 }

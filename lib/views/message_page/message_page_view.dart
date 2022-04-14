@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:group_chat/model/friend.dart';
 import 'package:group_chat/model/group.dart';
+import 'package:group_chat/other/NetWorkAPI.dart';
 import 'package:group_chat/other/auth.dart';
 import 'package:group_chat/model/message.dart';
 import 'package:group_chat/widgets/message/message_widget.dart';
@@ -40,7 +41,7 @@ class MessagePageView extends StatelessWidget {
       },
       builder: (context, viewModel, child) {
         return ScreenTypeLayout(
-          mobile: _MessagePageMobile(viewModel),
+          mobile: _MessagePageMobile(viewModel, friend, group, isGroupChat),
           desktop: _MessagePageDesktop(viewModel),
           tablet: _MessagePageTablet(viewModel),
         );

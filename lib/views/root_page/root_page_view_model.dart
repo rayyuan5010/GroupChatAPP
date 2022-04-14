@@ -1,6 +1,10 @@
+import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:group_chat/core/base/base_view_model.dart';
+import 'package:group_chat/core/logger.dart';
 import 'package:group_chat/model/user.dart';
 import 'package:group_chat/other/auth.dart';
+import 'package:group_chat/other/config.dart';
 import 'package:group_chat/other/dbHelp.dart';
 import 'package:group_chat/other/NetWorkAPI.dart';
 
@@ -18,6 +22,11 @@ class RootPageViewModel extends BaseViewModel {
     } else {
       Authentication.user = user;
       Authentication.status = LoginStatus.signIn;
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      messaging.getToken().then((value) async {
+        getLogger("MainPageRootState").d(value);
+        await NetWorkAPI.updateToken(value);
+      });
     }
     notifyListeners();
   }
