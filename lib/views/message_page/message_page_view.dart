@@ -11,8 +11,10 @@ import 'package:group_chat/model/group.dart';
 import 'package:group_chat/other/NetWorkAPI.dart';
 import 'package:group_chat/other/auth.dart';
 import 'package:group_chat/model/message.dart';
+import 'package:group_chat/other/config.dart';
 import 'package:group_chat/widgets/message/message_widget.dart';
 import 'package:group_chat/widgets/message_list/message_list_widget.dart';
+import 'package:logger/logger.dart';
 
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -38,6 +40,11 @@ class MessagePageView extends StatelessWidget {
     return ViewModelProvider<MessagePageViewModel>.withConsumer(
       onModelReady: (viewModel) {
         viewModel.getPosition(context);
+        if (!isGroupChat) {
+          viewModel.getOldMessage(friend);
+        }
+
+        Config.addMessage = viewModel.addMessage;
       },
       builder: (context, viewModel, child) {
         return ScreenTypeLayout(

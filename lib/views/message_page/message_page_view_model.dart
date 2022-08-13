@@ -1,10 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:group_chat/core/base/base_view_model.dart';
+import 'package:group_chat/model/friend.dart';
 import 'package:group_chat/model/message.dart';
+import 'package:group_chat/other/dbHelp.dart';
+import 'package:logger/logger.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MessagePageViewModel extends BaseViewModel {
@@ -29,6 +33,8 @@ class MessagePageViewModel extends BaseViewModel {
   Position position;
   TextEditingController sendMessageController = new TextEditingController();
   List<Message> messageList = [];
+  String preMessageSender = null;
+  String nextSender = null;
   void getPosition(context) async {
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -51,5 +57,31 @@ class MessagePageViewModel extends BaseViewModel {
 
   bool keyboardIsVisible(BuildContext context) {
     return !(MediaQuery.of(context).viewInsets.bottom == 0.0);
+  }
+
+  addMessage(Message message) async {
+    messageList.add(message);
+    notifyListeners();
+    await Future.delayed(const Duration(milliseconds: 100));
+    SchedulerBinding.instance?.addPostFrameCallback((_) {
+      scrollController.animateTo(scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
+    });
+  }
+
+  getOldMessage(Friend friend) async {
+    DBHelper dbHelper = new DBHelper();
+    List<Message> messages = await dbHelper.getFriendChatMessage(friend);
+    // print(messages.runtimeType);
+    messageList.addAll(messages);
+    // notifyListeners();
+    await Future.delayed(const Duration(milliseconds: 200));
+    SchedulerBinding.instance?.addPostFrameCallback((_) {
+      scrollController.animateTo(
+          scrollController.position.maxScrollExtent + 100,
+          duration: Duration(milliseconds: 200),
+          curve: Curves.fastOutSlowIn);
+    });
+    notifyListeners();
   }
 }

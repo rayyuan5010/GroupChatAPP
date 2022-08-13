@@ -7,6 +7,7 @@ import 'package:group_chat/other/auth.dart';
 import 'package:group_chat/other/config.dart';
 import 'package:group_chat/other/dbHelp.dart';
 import 'package:group_chat/other/NetWorkAPI.dart';
+import 'package:logger/logger.dart';
 
 class RootPageViewModel extends BaseViewModel {
   RootPageViewModel();
@@ -23,8 +24,11 @@ class RootPageViewModel extends BaseViewModel {
       Authentication.user = user;
       Authentication.status = LoginStatus.signIn;
       FirebaseMessaging messaging = FirebaseMessaging.instance;
+      // update user info
+      NetWorkAPI.getSelfInfo();
+      user = await dbHelper.checkLogin();
       messaging.getToken().then((value) async {
-        getLogger("MainPageRootState").d(value);
+        Logger().d("FCM TOKEN:$value");
         await NetWorkAPI.updateToken(value);
       });
     }

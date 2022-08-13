@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:group_chat/core/base/base_view_model.dart';
+import 'package:group_chat/core/logger.dart';
 import 'package:group_chat/model/user.dart';
 import 'package:group_chat/other/apireturn.dart';
 import 'package:group_chat/other/auth.dart';
@@ -10,6 +11,7 @@ import 'package:group_chat/other/dbHelp.dart';
 import 'package:group_chat/other/NetWorkAPI.dart';
 import 'package:group_chat/other/rootController.dart';
 import 'package:group_chat/views/main_group_list_page/main_group_list_page_view.dart';
+import 'package:group_chat/views/root_page/root_page_view.dart';
 import 'package:group_chat/views/root_page/root_page_view_model.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
@@ -40,11 +42,13 @@ class LoginPageViewModel extends BaseViewModel {
             name: resp.data['name'],
             password: resp.data['password'],
             firendCode: resp.data['friend'],
-            userSM: resp.data['userSM']);
+            userSM: resp.data['userSM'],
+            image: resp.data['image']);
         await database.insert(
           'tb_userInfo',
           Authentication.user.toMap(),
         );
+        notifyListeners();
         Authentication.status = LoginStatus.signIn;
         return null;
       } else {
@@ -77,6 +81,10 @@ class LoginPageViewModel extends BaseViewModel {
           Authentication.user.toMap(),
         );
         Authentication.status = LoginStatus.signIn;
+        messaging.getToken().then((value) async {
+          getLogger("LoginPageViewModel").d(value);
+          await NetWorkAPI.updateToken(value);
+        });
         return null;
       } else {
         return resp.message;

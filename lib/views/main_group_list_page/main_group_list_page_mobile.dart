@@ -16,14 +16,12 @@ class _MainGroupListPageMobile extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   child: Column(
                     children: [
+                      Container(height: 70, child: _myInfo()),
                       Container(
-                          height: constraints.maxHeight / 100 * 10,
-                          child: _myInfo()),
-                      Container(
-                        height: constraints.maxHeight / 100 * 5,
+                        height: 40,
                         child: Container(
                           height: 40,
-                          child: _searchBar(),
+                          child: _searchBar(context),
                         ),
                       ),
                       Container(
@@ -37,21 +35,39 @@ class _MainGroupListPageMobile extends StatelessWidget {
   }
 
   Widget _myInfo() {
+    Logger().d(Authentication.user.toMap());
+    Logger().d(Authentication.user.image == null);
+    Logger().d(Authentication.user.image.isEmpty);
     return Container(
       child: Row(
         children: [
           Expanded(
               flex: 2,
-              child: CircleAvatar(
-                maxRadius: 30.0,
-                backgroundColor: Colors.blueGrey,
-                child: Icon(FontAwesomeIcons.user),
+              child: InkWell(
+                onTap: () async {
+                  await locator<NavigatorService>().navigateToPage(
+                      HeadshotPreviewPageView(), RouteSettings(name: ""));
+                  viewModel.notifyListeners();
+                },
+                child: Authentication.user.image.isEmpty
+                    ? CircleAvatar(
+                        maxRadius: 25.0,
+                        backgroundColor: Colors.blueGrey,
+                        child: Icon(FontAwesomeIcons.user))
+                    : CachedNetworkImage(
+                        imageUrl:
+                            "${Config.apiURL('/file/image/headshot?i=${Authentication.user.id}&f=${Authentication.user.image}')}",
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        imageBuilder: (context, imageProvider) => CircleAvatar(
+                              maxRadius: 25.0,
+                              backgroundImage: imageProvider,
+                            )),
               )),
           Expanded(
               flex: 5,
               child: Column(
                 children: [
-                  Container(height: 20),
+                  Container(height: 10),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(Authentication.user.name,
@@ -59,6 +75,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 20)),
                   ),
+                  Container(height: 10),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(Authentication.user.userSM ?? "",
@@ -72,15 +89,18 @@ class _MainGroupListPageMobile extends StatelessWidget {
             flex: 3,
             child: Row(
               children: [
-                GestureDetector(
+                InkWell(
                     onTap: () {},
                     child: Icon(FontAwesomeIcons.solidBell, size: 20)),
                 Spacer(),
-                GestureDetector(
-                    onTap: () {},
+                InkWell(
+                    onTap: () {
+                      locator<NavigatorService>().navigateToPage(
+                          FindAndAddFriendPageView(), RouteSettings(name: ""));
+                    },
                     child: Icon(FontAwesomeIcons.userPlus, size: 20)),
                 Spacer(),
-                GestureDetector(
+                InkWell(
                     onTap: () {}, child: Icon(FontAwesomeIcons.cog, size: 20)),
                 Spacer(),
               ],
@@ -91,7 +111,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
     );
   }
 
-  Widget _searchBar() {
+  Widget _searchBar(context) {
     return Row(children: [
       Expanded(
         flex: 1,
@@ -100,6 +120,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
       Expanded(
         flex: 8,
         child: TextField(
+            style: Theme.of(context).textTheme.bodyText1,
             cursorColor: Colors.black,
             decoration: new InputDecoration(
                 border: InputBorder.none,
@@ -109,6 +130,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
                 disabledBorder: InputBorder.none,
                 contentPadding:
                     EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                hintStyle: Theme.of(context).textTheme.bodyText1,
                 hintText: "輸入關鍵字搜尋")),
       ),
       Expanded(
@@ -124,7 +146,7 @@ class _MainGroupListPageMobile extends StatelessWidget {
   Widget _listView() {
     return viewModel.controller.text == ""
         ? FutureBuilder<APIReturn>(
-            future: NetWorkAPI.getGroup(),
+            future: NetWorkAPI.getGroupAndFriend(),
             builder: (BuildContext context, AsyncSnapshot<APIReturn> snapshot) {
               if (snapshot.connectionState != ConnectionState.done ||
                   snapshot.data == null) {
@@ -150,18 +172,18 @@ class _MainGroupListPageMobile extends StatelessWidget {
                                 Animation<double> animation) {
                               Friend _friend = Friend.fromMap(
                                   snapshot.data.data['friendList'][index]);
+                              Config.friendCache.addAll({_friend.id: _friend});
                               // Faker faker = new Faker();
                               return InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MessagePageView(
-                                              group: null,
-                                              friend: _friend,
-                                              isGroupChat: false,
-                                            )),
-                                  );
+                                  Config.currentUser = _friend;
+                                  locator<NavigatorService>().navigateToPage(
+                                      MessagePageView(
+                                        group: null,
+                                        friend: _friend,
+                                        isGroupChat: false,
+                                      ),
+                                      RouteSettings(name: "MessagePageView"));
                                 },
                                 child: firendRow(_friend),
                               );
@@ -213,11 +235,15 @@ class _MainGroupListPageMobile extends StatelessWidget {
           children: [
             Expanded(
                 flex: 2,
-                child: CircleAvatar(
-                  maxRadius: 25.0,
-                  backgroundColor: Colors.blueGrey,
-                  // backgroundImage: NetworkImage(faker.image.image()),
-                )),
+                child: _friend.image.isEmpty
+                    ? CircleAvatar(
+                        maxRadius: 25.0,
+                        backgroundColor: Colors.blueGrey,
+                        child: Icon(FontAwesomeIcons.user))
+                    : FirendMessageHeadshotWidget(
+                        id: _friend.id,
+                        size: 25.0,
+                      )),
             Expanded(
                 flex: 6,
                 child: Column(
@@ -283,7 +309,7 @@ class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
   Widget build(context, double shrinkOffset, bool overlapsContent) {
     return Container(
       alignment: Alignment.centerLeft,
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: Padding(
         padding: const EdgeInsets.only(left: 20),
         child: Row(

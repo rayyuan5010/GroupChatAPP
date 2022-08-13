@@ -1,6 +1,7 @@
 library setting_page_view;
 
 import 'package:group_chat/other/auth.dart';
+import 'package:group_chat/other/dbHelp.dart';
 import 'package:group_chat/other/rootController.dart';
 import 'package:group_chat/views/root_page/root_page_view_model.dart';
 import 'package:provider_architecture/provider_architecture.dart';

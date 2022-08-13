@@ -15,14 +15,17 @@ part 'message_tablet.dart';
 part 'message_desktop.dart';
 
 class MessageWidget extends StatelessWidget {
-  MessageWidget({@required this.message}) : super(key: UniqueKey());
+  MessageWidget(
+      {@required this.message, this.showHead = true, this.showTime = true})
+      : super(key: UniqueKey());
   final Message message;
+  final bool showTime;
+  final bool showHead;
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout(
       mobile: _MessageMobile(
-        message: message,
-      ),
+          message: message, showHead: showHead, showTime: showTime),
       desktop: _MessageDesktop(),
       tablet: _MessageTablet(),
     );

@@ -17,6 +17,7 @@ class _MainPageRootMobile extends StatelessWidget {
         },
       ),
       bottomNavigationBar: BottomNavyBar(
+        backgroundColor: Theme.of(context).backgroundColor,
         selectedIndex: viewModel.currentIndex,
         showElevation: true,
         itemCornerRadius: 24,

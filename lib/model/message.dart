@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:group_chat/core/base/base_database.dart';
 import 'package:group_chat/core/logger.dart';
 import 'package:group_chat/other/dbHelp.dart';
+import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';
 
-class Message {
+class Message extends DataBaseBasic {
   Message(
-      {@required this.senderId,
-      @required this.senderName,
-      @required this.reciver,
-      @required this.reciveType,
-      @required this.messageId,
-      @required this.messageType,
-      @required this.messageTime,
-      @required this.messageContent,
-      @required this.messageTabId,
-      @required this.groupId}) {
+      {this.senderId,
+      this.senderName,
+      this.reciver,
+      this.reciveType,
+      this.messageId,
+      this.messageType,
+      this.messageTime,
+      this.messageContent,
+      this.messageTabId,
+      this.groupId}) {
     Map messageRowData = {
       "senderId": senderId,
       "senderName": senderName,
@@ -27,10 +29,13 @@ class Message {
       "messageTabId": messageTabId,
       "groupId": groupId,
     };
-    this.messageDetail = new MessageDetail(messageRowData);
-    this.messageSender = new MessageSender(messageRowData);
+
+    if (senderId != null) {
+      this.messageDetail = new MessageDetail(messageRowData);
+      this.messageSender = new MessageSender(messageRowData);
+    }
   }
-  static String _tableName = "tb_message";
+  static String tableName = "tb_message";
   String senderId;
   String senderName;
   String reciver;
@@ -39,7 +44,7 @@ class Message {
   int messageType;
   int messageTime;
   String messageContent;
-  String messageTabId;
+  int messageTabId;
   String groupId;
   MessageDetail messageDetail;
   MessageSender messageSender;
@@ -47,12 +52,12 @@ class Message {
     var map = <String, dynamic>{
       "senderId": messageSender.id,
       "senderName": messageSender.name,
-      "reciver": messageDetail.reciver,
-      "reciveType": messageDetail.reciveType,
+      "reciver": reciver,
+      "reciveType": messageDetail.reciveType.index,
       "messageContent": messageContent,
       "messageId": messageDetail.id,
-      "messageType": messageDetail.messageType,
-      "messageTime": messageDetail.reciveTime,
+      "messageType": messageDetail.messageType.index,
+      "messageTime": messageTime,
       "messageTabId": messageDetail.tabId,
       "groupId": messageSender.groupId,
     };
@@ -63,13 +68,27 @@ class Message {
     this.senderId = map["senderId"];
     this.senderName = map["senderName"];
     this.reciver = map["reciver"];
-    this.reciveType = map["reciveType"];
+    if (map["reciveType"].runtimeType == int) {
+      this.reciveType = map["reciveType"];
+    } else {
+      this.reciveType = int.parse(map["reciveType"]);
+    }
+
     this.messageId = map["messageId"];
     this.messageContent = map["messageContent"];
-    this.messageType = map["messageType"];
-    this.messageTime = map["messageTime"];
-    this.messageTabId = map["messageTabId"];
-    this.groupId = map["groupId"];
+    if (map["messageType"].runtimeType == int) {
+      this.messageType = map["messageType"];
+    } else {
+      this.messageType = int.parse(map["messageType"]);
+    }
+    if (map["messageTime"].runtimeType == int) {
+      this.messageTime = map["messageTime"];
+    } else {
+      this.messageTime = int.parse(map["messageTime"]);
+    }
+
+    this.messageTabId = int.parse(map["messageTabId"]);
+    this.groupId = map["groupId"] ?? "";
     Map messageRowData = {
       "senderId": this.senderId,
       "senderName": this.senderName,
@@ -85,40 +104,28 @@ class Message {
     this.messageDetail = new MessageDetail(messageRowData);
     this.messageSender = new MessageSender(messageRowData);
   }
-  static createTable(Database db) async {
-    var result = await db
-        .query('sqlite_master', where: 'name = ?', whereArgs: [_tableName]);
-    if (result.isEmpty) {
-      await DBHelper().createTable(
-        db: db,
-        tableName: _tableName,
-        columns: {
-          "senderId": "TEXT",
-          "senderName": "TEXT",
-          "reciver": "TEXT",
-          "reciveType": "INTEGER",
-          "messageId": "TEXT  PRIMARY KEY",
-          "messageContent": "TEXT",
-          "messageType": "INTEGER",
-          "messageTime": "DATETIME",
-          "messageTabId": "TEXT",
-          "groupId": "TEXT",
-        },
-      );
-    } else {
-      getLogger("Group").e("table exist");
-    }
+
+  createTable(Database db) {
+    super.create(db, tableName, {
+      "senderId": "TEXT",
+      "senderName": "TEXT",
+      "reciver": "TEXT",
+      "reciveType": "INTEGER",
+      "messageId": "TEXT  PRIMARY KEY",
+      "messageContent": "TEXT",
+      "messageType": "INTEGER",
+      "messageTime": "DATETIME",
+      "messageTabId": "TEXT",
+      "groupId": "TEXT",
+    });
   }
 
-  static dropTable(Database db) async {
-    var result = await db
-        .query('sqlite_master', where: 'name = ?', whereArgs: [_tableName]);
-    if (result.isNotEmpty) {
-      await db.execute("DROP TABLE $_tableName");
-    } else {
-      return false;
-    }
-    return true;
+  dropTable(Database db) {
+    super.drop(db, tableName);
+  }
+
+  clearTable(Database db) {
+    super.clear(db, tableName);
   }
 }
 
@@ -141,7 +148,7 @@ class MessageDetail {
   String id;
   DateTime reciveTime;
   String content;
-  String tabId;
+  int tabId;
   ReciveType reciveType;
   List<String> reciver;
   // Map messageRowData;
@@ -158,9 +165,9 @@ class MessageDetail {
     this.messageType = MessageType.values[rd['messageType']];
 
     this.reciveType = ReciveType.values[rd['reciveType']];
-    if (rd['reciver'] != '') {
-      this.reciver = List.from(rd['reciver']);
-    }
+    // if (rd['reciver'] != '' && rd['reciver'] != null) {
+    //   this.reciver = List.from(rd['reciver']);
+    // }
   }
 }
 
@@ -186,4 +193,5 @@ enum MessageType {
   MAPPATH,
   DRAW,
 }
+
 enum ReciveType { PUBLIC, PRIVATE }

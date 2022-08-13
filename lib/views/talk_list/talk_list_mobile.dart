@@ -68,14 +68,9 @@ class _TalkListMobile extends StatelessWidget {
         ? LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return ListView.builder(
-                itemCount: 30,
+                itemCount: viewModel.rooms.length,
                 itemBuilder: (BuildContext context, int index) {
-                  Faker faker = new Faker();
-                  Friend _friend = Friend(
-                      id: viewModel.getRandomString(20),
-                      name: faker.person.name(),
-                      image: faker.image.image());
-                  return firendRow(_friend, context);
+                  return firendRow(viewModel.rooms[index], context);
                 },
               );
             },
@@ -83,14 +78,14 @@ class _TalkListMobile extends StatelessWidget {
         : ListView();
   }
 
-  Widget firendRow(Friend _friend, BuildContext context) {
+  Widget firendRow(Room room, BuildContext context) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => MessagePageView(
-                    friend: _friend,
+                    friend: viewModel.friendWithID[room.id],
                     group: null,
                     isGroupChat: false,
                   )),
@@ -102,12 +97,7 @@ class _TalkListMobile extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                  flex: 2,
-                  child: CircleAvatar(
-                    maxRadius: 25.0,
-                    backgroundColor: Colors.blueGrey,
-                    backgroundImage: NetworkImage(faker.image.image()),
-                  )),
+                  flex: 2, child: FirendMessageHeadshotWidget(id: room.id)),
               Expanded(
                   flex: 6,
                   child: Column(
@@ -115,14 +105,14 @@ class _TalkListMobile extends StatelessWidget {
                       Container(height: 10),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(_friend.name,
+                        child: Text(room.name ?? "",
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 20)),
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(_friend.userSM,
+                        child: Text(room.lastMessage ?? "",
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 14)),
@@ -146,7 +136,7 @@ class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
   Widget build(context, double shrinkOffset, bool overlapsContent) {
     return Container(
       alignment: Alignment.centerLeft,
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: Padding(
         padding: const EdgeInsets.only(left: 20),
         child: Row(

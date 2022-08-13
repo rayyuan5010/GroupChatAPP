@@ -9,11 +9,13 @@ class _SettingPageMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: RaisedButton(
-          onPressed: () {
+        child: MaterialButton(
+          onPressed: () async {
             // Authentication.auth.signOut();
             // LoginStatus s
             Authentication.status = LoginStatus.noSingIn;
+            DBHelper dbHelper = DBHelper();
+            await dbHelper.logout();
             // viewModel.notifyListeners();
             // viewModel.dispose();
             // viewModel.notifyListeners();

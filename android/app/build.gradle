@@ -37,6 +37,7 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
    signingConfigs {
         release {
@@ -52,6 +53,9 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
+    }
+    dependencies{
+        implementation 'com.android.support:multidex:1.0.3'
     }
 }
 

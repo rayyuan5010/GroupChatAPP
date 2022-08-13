@@ -1,19 +1,25 @@
 part of text_message_widget;
 
 class _TextMessageMobile extends StatelessWidget {
-  _TextMessageMobile({@required this.message, @required this.self});
+  _TextMessageMobile(
+      {@required this.message,
+      @required this.self,
+      @required this.showHead,
+      @required this.showTime});
+  final bool showTime;
+  final bool showHead;
   final Message message;
   final bool self;
   @override
   Widget build(BuildContext context) {
-    return self ? selfTextMessage() : friendMessage();
+    return self ? selfTextMessage(context) : friendMessage(context);
   }
 
   // Widget selfMessage() {
 
   // }
 
-  Widget selfTextMessage() {
+  Widget selfTextMessage(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
@@ -35,7 +41,7 @@ class _TextMessageMobile extends StatelessWidget {
     );
   }
 
-  Widget friendMessage() {
+  Widget friendMessage(BuildContext context) {
     return Container(
       // color: Colors.red,
       child: Align(
@@ -43,19 +49,21 @@ class _TextMessageMobile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 5),
           child: Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
+            // overflow: Overflow.visible,
             children: [
-              Positioned(
-                top: 0,
-                left: 5,
-                child: Container(
-                  child: CircleAvatar(
-                    maxRadius: 20.0,
-                    backgroundColor: Colors.blueGrey,
-                    child: Icon(FontAwesomeIcons.user),
-                  ),
-                ),
-              ),
+              Visibility(
+                  visible: showHead,
+                  child: Positioned(
+                    top: 5,
+                    left: 5,
+                    child: Container(
+                      child: FirendMessageHeadshotWidget(
+                        id: message.senderId,
+                        size: 20,
+                      ),
+                    ),
+                  )),
               Padding(
                 padding: const EdgeInsets.only(left: 50, top: 10),
                 child: Container(
@@ -70,17 +78,22 @@ class _TextMessageMobile extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                right: -60,
-                child: Container(
-                  width: 50,
-                  child: Text(
-                      DateFormat('HH:mm')
-                          .format(message.messageDetail.reciveTime),
-                      style: TextStyle(fontSize: 10, color: Colors.black)),
-                ),
-              ),
+              Visibility(
+                  visible: showTime,
+                  child: Positioned(
+                    bottom: 0,
+                    right: -60,
+                    child: Container(
+                      width: 50,
+                      child: Text(
+                          DateFormat('HH:mm')
+                              .format(message.messageDetail.reciveTime),
+                          style: TextStyle(
+                              fontSize: 10,
+                              color:
+                                  Theme.of(context).textTheme.bodyText1.color)),
+                    ),
+                  ))
             ],
           ),
         ),

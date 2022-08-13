@@ -2,45 +2,53 @@ import 'package:flutter/material.dart';
 import 'package:group_chat/core/base/base_database.dart';
 import 'package:group_chat/core/logger.dart';
 import 'package:group_chat/other/dbHelp.dart';
+import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';
 
-class Friend extends DataBaseBasic {
-  Friend({this.id, this.name, this.image, this.userSM = "", isFriend = true});
+class Room extends DataBaseBasic {
+  Room({this.id, this.name, this.image, this.lastMessage, this.isGroup = true});
   String id;
   String name;
   String image;
-  String userSM;
+  String lastMessage;
+  bool isGroup;
+
   // bool isFriend;
-  static final String tableName = "tb_friend";
+  static final String tableName = "tb_room";
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       "id": id,
       "name": name,
       "image": image,
-      "userSM": userSM,
-      // "isFriend": isFriend ? 1 : 0
+      "lastMessage": lastMessage,
+      "isGroup": isGroup ? 1 : 0
     };
     return map;
   }
 
-  Friend.fromMap(Map<String, dynamic> map) {
+  Room.fromMap(Map<String, dynamic> map) {
     this.id = map['id'];
     this.name = map['name'];
-    this.userSM = map['userSM'] ?? "";
     this.image = map['image'] ?? "";
-    // this.isFriend = map['isFriend'] ?? true;
+    this.lastMessage = map['lastMessage'] ?? "";
+    print(map["isGroup"]);
+    if (map["isGroup"].runtimeType == int) {
+      this.isGroup = map['isGroup'] == 1 ? true : false;
+    } else {
+      this.isGroup = map['isGroup'];
+    }
   }
-
-  createTable(Database db) {
+  createTable(Database db) async {
     super.create(db, tableName, {
       "id": "TEXT  PRIMARY KEY",
       "name": "TEXT",
       "image": "TEXT",
-      "userSM": "TEXT"
+      "lastMessage": "TEXT",
+      "isGroup": "INTEGER"
     });
   }
 
-  dropTable(Database db) {
+  dropTable(Database db) async {
     super.drop(db, tableName);
   }
 

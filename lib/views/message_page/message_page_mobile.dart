@@ -1,22 +1,35 @@
 part of message_page_view;
 
-class _MessagePageMobile extends StatelessWidget {
+class _MessagePageMobile extends StatefulWidget {
+  _MessagePageMobile(this.viewModel, this.friend, this.group, this.isGroupChat);
   final MessagePageViewModel viewModel;
   final Friend friend;
   final Group group;
   final bool isGroupChat;
-  _MessagePageMobile(this.viewModel, this.friend, this.group, this.isGroupChat);
+  @override
+  State<_MessagePageMobile> createState() =>
+      _MessagePageMobileState(viewModel, friend, group, isGroupChat);
+}
 
+class _MessagePageMobileState extends State<_MessagePageMobile>
+    with AutomaticKeepAliveClientMixin {
+  _MessagePageMobileState(
+      this.viewModel, this.friend, this.group, this.isGroupChat);
+  final MessagePageViewModel viewModel;
+  final Friend friend;
+  final Group group;
+  final bool isGroupChat;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).backgroundColor,
         title: Text(
           viewModel.title,
-          style: TextStyle(color: Colors.black),
+          // style: TextStyle(color: Colors.black),
         ),
-        iconTheme: IconThemeData(color: Colors.black),
+        // iconTheme: IconThemeData(color: Colors.black),
         actions: [IconButton(icon: Icon(Icons.more_vert), onPressed: () {})],
       ),
       body: bodyView(),
@@ -54,17 +67,11 @@ class _MessagePageMobile extends StatelessWidget {
                                   Tab(
                                     child: Text(
                                       '地圖',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
                                     ),
                                   ),
                                   Tab(
                                     child: Text(
                                       '筆跡',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
                                     ),
                                   )
                                 ],
@@ -77,32 +84,32 @@ class _MessagePageMobile extends StatelessWidget {
                                   physics: NeverScrollableScrollPhysics(),
                                   controller: viewModel.controller,
                                   children: [
-                                    GoogleMapWidget(
-                                        onFinished:
-                                            (Completer<GoogleMapController>
-                                                _controller) async {
-                                          final position = await Geolocator
-                                              .getCurrentPosition();
-                                          final GoogleMapController controller =
-                                              await _controller.future;
-                                          controller.animateCamera(
-                                              CameraUpdate.newCameraPosition(
-                                                  CameraPosition(
-                                            target: LatLng(position.latitude,
-                                                position.longitude),
-                                            zoom: 14.4746,
-                                          )));
-                                          // viewModel.markers = {
-                                          //   Marker(
-                                          //     markerId: MarkerId("marker_1"),
-                                          //     position: LatLng(
-                                          //         position.latitude,
-                                          //         position.longitude),
-                                          //   )
-                                          // };
-                                          // viewModel.notifyListeners();
-                                        },
-                                        markers: viewModel.markers),
+                                    // GoogleMapWidget(
+                                    //     onFinished:
+                                    //         (Completer<GoogleMapController>
+                                    //             _controller) async {
+                                    //       final position = await Geolocator
+                                    //           .getCurrentPosition();
+                                    //       final GoogleMapController controller =
+                                    //           await _controller.future;
+                                    //       controller.animateCamera(
+                                    //           CameraUpdate.newCameraPosition(
+                                    //               CameraPosition(
+                                    //         target: LatLng(position.latitude,
+                                    //             position.longitude),
+                                    //         zoom: 14.4746,
+                                    //       )));
+                                    //       // viewModel.markers = {
+                                    //       //   Marker(
+                                    //       //     markerId: MarkerId("marker_1"),
+                                    //       //     position: LatLng(
+                                    //       //         position.latitude,
+                                    //       //         position.longitude),
+                                    //       //   )
+                                    //       // };
+                                    //       // viewModel.notifyListeners();
+                                    //     },
+                                    //     markers: viewModel.markers),
                                     Container()
                                   ],
                                 ),
@@ -120,8 +127,29 @@ class _MessagePageMobile extends StatelessWidget {
                     controller: viewModel.scrollController,
                     children: List.generate(
                       viewModel.messageList.length,
-                      (index) =>
-                          MessageWidget(message: viewModel.messageList[index]),
+                      (index) {
+                        bool showHead = true;
+                        bool showTime = false;
+                        if (viewModel.preMessageSender !=
+                            viewModel.messageList[index].senderId) {
+                          showHead = false;
+                        }
+                        if ((index + 1) < viewModel.messageList.length) {
+                          if (viewModel.messageList[index + 1].senderId !=
+                              viewModel.messageList[index].senderId) {
+                            showTime = true;
+                          }
+                        }
+
+                        viewModel.preMessageSender =
+                            viewModel.messageList[index].senderId;
+
+                        return MessageWidget(
+                          message: viewModel.messageList[index],
+                          showHead: !showHead,
+                          showTime: showTime,
+                        );
+                      },
                     ),
                   ))),
               Container(
@@ -134,21 +162,30 @@ class _MessagePageMobile extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 8,
-                        child: SingleChildScrollView(
-                          child: TextField(
-                              maxLines: null,
-                              textInputAction: TextInputAction.newline,
-                              controller: viewModel.sendMessageController,
-                              cursorColor: Colors.black,
-                              decoration: new InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                  contentPadding: EdgeInsets.only(
-                                      left: 15, bottom: 11, top: 11, right: 15),
-                                  hintText: "輸入訊息")),
+                        child: SizedBox(
+                          height: 40,
+                          child: SingleChildScrollView(
+                            child: TextField(
+                                maxLines: null,
+                                textInputAction: TextInputAction.newline,
+                                controller: viewModel.sendMessageController,
+                                style: Theme.of(context).textTheme.bodyText1,
+                                cursorColor: Colors.black,
+                                decoration: new InputDecoration(
+                                    border: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    contentPadding: EdgeInsets.only(
+                                        left: 15,
+                                        bottom: 15,
+                                        top: 5,
+                                        right: 15),
+                                    hintStyle:
+                                        Theme.of(context).textTheme.bodyText1,
+                                    hintText: "輸入訊息")),
+                          ),
                         ),
                       ),
                       Expanded(
@@ -156,23 +193,27 @@ class _MessagePageMobile extends StatelessWidget {
                         child: IconButton(
                           onPressed: () async {
                             var time = DateTime.now().millisecondsSinceEpoch;
+                            Logger().d(time);
                             String message =
                                 viewModel.sendMessageController.text;
-                            viewModel.messageList.add(Message.fromMap({
+                            if (message.isEmpty) {
+                              return;
+                            }
+                            Message Tmessage = Message.fromMap({
                               "senderId": Authentication.user.id,
-                              "senderName": "name",
-                              "senderImage": "image",
-                              "reciver": "",
-                              "reciveType": 0,
+                              "senderName": Authentication.user.name,
+                              "reciver": friend.id,
+                              "reciveType": "0",
                               "messageId": "${Authentication.user.id}-${time}",
-                              "messageType": 0,
-                              "messageTime": time,
+                              "messageType": "0",
+                              "messageTime": "$time",
                               "messageContent": message,
-                              "messageTabId": ""
-                            }));
+                              "messageTabId": "0"
+                            });
+                            viewModel.messageList.add(Tmessage);
                             NetWorkAPI.sendMessage(
                               isGroupChat ? group.id : friend.id,
-                              message,
+                              Tmessage,
                             );
                             viewModel.sendMessageController.clear();
                             viewModel.notifyListeners();
@@ -198,4 +239,8 @@ class _MessagePageMobile extends StatelessWidget {
       },
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

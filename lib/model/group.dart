@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_chat/core/base/base_database.dart';
 import 'package:group_chat/core/logger.dart';
 import 'package:group_chat/other/dbHelp.dart';
 import 'package:sqflite/sqflite.dart';
@@ -12,17 +13,13 @@ import 'package:sqflite/sqflite.dart';
 //owner: 5UZcmL5LtuWQkVe7JiqZ,
 //updatedAt: null
 //}
-class Group {
-  Group(
-      {@required this.id,
-      @required this.name,
-      @required this.owner,
-      this.image});
+class Group extends DataBaseBasic {
+  Group({this.id, this.name, this.owner, this.image});
   String id;
   String name;
   String owner;
   String image;
-  static final String _tableName = "tb_group";
+  static final String tableName = "tb_group";
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       "id": id,
@@ -39,33 +36,21 @@ class Group {
     this.owner = map['owner'];
     this.image = map['image'] ?? "";
   }
-  static createTable(Database db) async {
-    var result = await db
-        .query('sqlite_master', where: 'name = ?', whereArgs: [_tableName]);
-    if (result.isEmpty) {
-      await DBHelper().createTable(
-        db: db,
-        tableName: _tableName,
-        columns: {
-          "id": "TEXT  PRIMARY KEY",
-          "name": "TEXT",
-          "image": "TEXT",
-          "owner": "TEXT"
-        },
-      );
-    } else {
-      getLogger("Group").e("table exist");
-    }
+
+  createTable(Database db) {
+    super.create(db, tableName, {
+      "id": "TEXT  PRIMARY KEY",
+      "name": "TEXT",
+      "image": "TEXT",
+      "owner": "TEXT"
+    });
   }
 
-  static dropTable(Database db) async {
-    var result = await db
-        .query('sqlite_master', where: 'name = ?', whereArgs: [_tableName]);
-    if (result.isNotEmpty) {
-      await db.execute("DROP TABLE $_tableName");
-    } else {
-      return false;
-    }
-    return true;
+  dropTable(Database db) {
+    super.drop(db, tableName);
+  }
+
+  clearTable(Database db) {
+    super.clear(db, tableName);
   }
 }
