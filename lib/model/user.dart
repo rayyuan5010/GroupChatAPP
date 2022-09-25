@@ -12,14 +12,14 @@ class User extends DataBaseBasic {
       this.name,
       this.image,
       this.userSM,
-      this.firendCode});
+      this.friendCode});
   String id;
   String account;
   String password;
   String name;
   String image;
   String userSM;
-  String firendCode;
+  String friendCode;
   static final String tableName = "tb_userInfo";
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -29,7 +29,7 @@ class User extends DataBaseBasic {
       "userSM": userSM,
       "name": name,
       "image": image,
-      "firendCode": firendCode,
+      "friendCode": friendCode,
     };
     return map;
   }
@@ -41,7 +41,7 @@ class User extends DataBaseBasic {
     this.userSM = map['userSM'];
     this.name = map['name'];
     this.image = map['image'];
-    this.firendCode = map['firendCode'];
+    this.friendCode = map['friendCode'];
   }
 
   createTable(Database db) {
@@ -52,7 +52,7 @@ class User extends DataBaseBasic {
       "userSM": "TEXT",
       "name": "TEXT",
       "image": "TEXT",
-      "firendCode": "TEXT",
+      "friendCode": "TEXT",
     });
   }
 

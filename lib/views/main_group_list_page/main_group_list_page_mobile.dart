@@ -1,9 +1,18 @@
 part of main_group_list_page_view;
 
-class _MainGroupListPageMobile extends StatelessWidget {
+class _MainGroupListPageMobile extends StatefulWidget {
+  _MainGroupListPageMobile(this.viewModel);
+  final MainGroupListPageViewModel viewModel;
+  @override
+  State<_MainGroupListPageMobile> createState() =>
+      _MainGroupListPageMobileState(viewModel);
+}
+
+class _MainGroupListPageMobileState extends State<_MainGroupListPageMobile>
+    with AutomaticKeepAliveClientMixin {
   final MainGroupListPageViewModel viewModel;
 
-  _MainGroupListPageMobile(this.viewModel);
+  _MainGroupListPageMobileState(this.viewModel);
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +44,6 @@ class _MainGroupListPageMobile extends StatelessWidget {
   }
 
   Widget _myInfo() {
-    Logger().d(Authentication.user.toMap());
-    Logger().d(Authentication.user.image == null);
-    Logger().d(Authentication.user.image.isEmpty);
     return Container(
       child: Row(
         children: [
@@ -150,11 +156,8 @@ class _MainGroupListPageMobile extends StatelessWidget {
             builder: (BuildContext context, AsyncSnapshot<APIReturn> snapshot) {
               if (snapshot.connectionState != ConnectionState.done ||
                   snapshot.data == null) {
-                //print('project snapshot data is: ${projectSnap.data}');
                 return Container();
               } else {
-                // print(snapshot.data);
-                // getLogger("MainGroupListPage").d(snapshot.data.toMap());
                 if (snapshot.data.status) {
                   return LayoutBuilder(
                     builder:
@@ -297,6 +300,10 @@ class _MainGroupListPageMobile extends StatelessWidget {
           ],
         ));
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {

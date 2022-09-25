@@ -52,7 +52,6 @@ class MessagePageViewModel extends BaseViewModel {
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }));
     notifyListeners();
-    print("ready");
   }
 
   bool keyboardIsVisible(BuildContext context) {
@@ -72,9 +71,7 @@ class MessagePageViewModel extends BaseViewModel {
   getOldMessage(Friend friend) async {
     DBHelper dbHelper = new DBHelper();
     List<Message> messages = await dbHelper.getFriendChatMessage(friend);
-    // print(messages.runtimeType);
     messageList.addAll(messages);
-    // notifyListeners();
     await Future.delayed(const Duration(milliseconds: 200));
     SchedulerBinding.instance?.addPostFrameCallback((_) {
       scrollController.animateTo(

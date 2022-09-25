@@ -107,7 +107,13 @@ class _FindAndAddFriendPageMobile extends StatelessWidget {
                     decoration: InputDecoration(
                       fillColor: Colors.redAccent,
                       hintText: 'Search',
-                      // hintStyle: new TextStyle(color: Colors.white),
+                      hintStyle: new TextStyle(
+                          color: Theme.of(locator<NavigatorService>()
+                                  .navigatorKey
+                                  .currentContext)
+                              .textTheme
+                              .bodyText1
+                              .color),
                       contentPadding: EdgeInsets.all(10.0),
                       border: InputBorder.none,
                     )),
@@ -138,7 +144,10 @@ class _FindAndAddFriendPageMobile extends StatelessWidget {
         children: [
           Expanded(
             flex: 1,
-            child: Container(),
+            child: Text(
+              '我的好友碼 : ${Authentication.user.friendCode}',
+              style: TextStyle(fontSize: 20),
+            ),
           ),
           Expanded(
             child: CircleAvatar(

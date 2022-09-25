@@ -8,8 +8,9 @@ class _SettingPageMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: MaterialButton(
+        body: SafeArea(
+      child: Column(children: [
+        MaterialButton(
           onPressed: () async {
             // Authentication.auth.signOut();
             // LoginStatus s
@@ -23,7 +24,7 @@ class _SettingPageMobile extends StatelessWidget {
           },
           child: Text('logout'),
         ),
-      ),
-    );
+      ]),
+    ));
   }
 }

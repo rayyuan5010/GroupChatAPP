@@ -16,8 +16,6 @@ class RootPageViewModel extends BaseViewModel {
     DBHelper dbHelper = new DBHelper();
     User user = await dbHelper.checkLogin();
 
-    // User user = FirebaseAuth.instance.currentUser;
-    // print(user);
     if (user == null) {
       Authentication.status = LoginStatus.noSingIn;
     } else {

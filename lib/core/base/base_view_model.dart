@@ -12,8 +12,8 @@ class BaseViewModel extends ChangeNotifier {
     bool busy = false,
     String title,
   })  : _busy = busy,
-      _title = title {
-    log = getLogger(title ?? this.runtimeType.toString());
+        _title = title {
+    log = getLogger(className: title ?? this.runtimeType.toString());
   }
 
   bool get busy => this._busy;
@@ -22,9 +22,9 @@ class BaseViewModel extends ChangeNotifier {
 
   set busy(bool busy) {
     log.i(
-        'busy: '
-        '$title is entering '
-        '${busy ? 'busy' : 'free'} state',
+      'busy: '
+      '$title is entering '
+      '${busy ? 'busy' : 'free'} state',
     );
     this._busy = busy;
     notifyListeners();
@@ -33,10 +33,10 @@ class BaseViewModel extends ChangeNotifier {
   @override
   void notifyListeners() {
     if (!isDisposed) {
-        super.notifyListeners();
+      super.notifyListeners();
     } else {
-        log.w('notifyListeners: Notify listeners called after '
-            '${title ?? this.runtimeType.toString()} has been disposed');
+      log.w('notifyListeners: Notify listeners called after '
+          '${title ?? this.runtimeType.toString()} has been disposed');
     }
   }
 

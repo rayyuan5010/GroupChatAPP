@@ -27,13 +27,12 @@ class TalkListViewModel extends BaseViewModel {
   getRooms() async {
     DBHelper dbHelper = new DBHelper();
     rooms = await dbHelper.getRooms();
-    Logger().d(rooms);
+    // Logger().d(rooms);
     List<Friend> friends = await dbHelper.getFriends();
     friends.forEach((element) {
       friendWithID[element.id] = element;
     });
     notifyListeners();
-    Logger().d(rooms);
   }
 
   addRoom() async {

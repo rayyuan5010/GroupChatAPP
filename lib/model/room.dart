@@ -31,7 +31,7 @@ class Room extends DataBaseBasic {
     this.name = map['name'];
     this.image = map['image'] ?? "";
     this.lastMessage = map['lastMessage'] ?? "";
-    print(map["isGroup"]);
+
     if (map["isGroup"].runtimeType == int) {
       this.isGroup = map['isGroup'] == 1 ? true : false;
     } else {

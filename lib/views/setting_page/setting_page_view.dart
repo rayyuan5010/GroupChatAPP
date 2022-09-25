@@ -1,5 +1,7 @@
 library setting_page_view;
 
+import 'package:group_chat/core/locator.dart';
+import 'package:group_chat/core/services/navigator_service.dart';
 import 'package:group_chat/other/auth.dart';
 import 'package:group_chat/other/dbHelp.dart';
 import 'package:group_chat/other/rootController.dart';

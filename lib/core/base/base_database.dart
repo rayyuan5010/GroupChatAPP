@@ -24,14 +24,14 @@ class DataBaseBasic {
       String sql = "CREATE TABLE $tableName ($columnsSQL)";
       try {
         await db.execute(sql);
-        print(sql);
+        getLogger(className: "DataBaseBasic").d(sql);
         return true;
       } catch (e) {
-        print(e);
+        getLogger(className: "DataBaseBasic").e(e);
         return false;
       }
     } else {
-      Logger().i("[DataBaseBasic][create][$tableName] table exists");
+      getLogger(className: "DataBaseBasic").i("[$tableName] table exists");
     }
   }
 

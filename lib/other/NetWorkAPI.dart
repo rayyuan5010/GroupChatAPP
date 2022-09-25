@@ -12,7 +12,6 @@ import 'package:group_chat/model/message.dart';
 import 'package:group_chat/model/user.dart';
 import 'package:group_chat/other/auth.dart';
 import 'package:group_chat/other/dbHelp.dart';
-import 'package:logger/logger.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -63,8 +62,9 @@ class NetWorkAPI {
         }
 
         var formData = FormData.fromMap(data);
+        getLogger(className: "NetWorkAPI").d("call api ${Config.apiURL(url)}");
         response = await dio.post(Config.apiURL(url), data: formData);
-        getLogger("NetWorkAPI").d(response.statusCode);
+        getLogger(className: "NetWorkAPI").d(response.statusCode);
         if (response.statusCode == 200) {
           // print(response.data);
           return APIReturn.fromMap(response.data);
@@ -72,7 +72,7 @@ class NetWorkAPI {
           return APIReturn(status: false, message: 'server error');
         }
       } catch (e) {
-        Logger().e(e);
+        // Logger().e(e);
         return APIReturn(status: false, message: 'server error');
       }
     } else {
@@ -99,6 +99,8 @@ class NetWorkAPI {
         friendList.forEach((e) {
           dbHelper.createOrUpdateFriendInfo(Friend.fromMap(e));
         });
+      } else {
+        List<Friend> friends = await dbHelper.getFriends();
       }
     }
 
@@ -128,6 +130,7 @@ class NetWorkAPI {
     APIReturn resp =
         await _sendHTTP({'userId': Authentication.user.id}, "/user/self/get");
     if (resp.status) {
+      getLogger(className: "getSelfInfo").d(resp.data);
       await DBHelper().updateSelfInfo(User.fromMap(resp.data));
     }
   }
@@ -199,7 +202,7 @@ class NetWorkAPI {
     } catch (ex) {
       filePath = 'Can not fetch url';
     }
-    print(filePath);
+
     return filePath;
   }
 }

@@ -155,8 +155,6 @@ class MessageDetail {
   // dynamic messageData;
 
   MessageDetail(Map rd) {
-    print(rd);
-    // print(type(rd));
     this.id = rd['messageId'];
     this.reciveTime = DateTime.fromMillisecondsSinceEpoch(rd["messageTime"]);
     this.content = rd['messageContent'];

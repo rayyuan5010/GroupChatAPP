@@ -7,7 +7,7 @@ class BaseService {
 
   BaseService({String title}) {
     this.log = getLogger(
-      title ?? this.runtimeType.toString(),
+      className: title ?? this.runtimeType.toString(),
     );
   }
 }

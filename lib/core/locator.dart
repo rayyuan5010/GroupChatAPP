@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 GetIt locator = GetIt.instance;
 
 class LocatorInjector {
-  static Logger _log = getLogger('LocatorInjector');
+  static Logger _log = getLogger(className: 'LocatorInjector');
 
   static Future<void> setupLocator() async {
     _log.d('Initializing Navigator Service');

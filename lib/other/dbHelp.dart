@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_chat/core/logger.dart';
 import 'package:group_chat/model/friend.dart';
 import 'package:group_chat/model/group.dart';
 import 'package:group_chat/model/message.dart';
@@ -30,7 +31,6 @@ class DBHelper {
   }
 
   _onUpgrade(Database db, int version, int version2) async {
-    print("_onUpgrade");
     await Friend().dropTable(db);
     await Group().dropTable(db);
     // await User().dropTable(db);
@@ -45,7 +45,6 @@ class DBHelper {
   }
 
   _onCreate(Database db, int version) async {
-    print("_onCreate");
     await Friend().createTable(db);
     await Group().createTable(db);
     await User().createTable(db);
@@ -58,6 +57,7 @@ class DBHelper {
     List<Map> maps = await dbClient.query(
       'tb_userInfo',
     );
+    // getLogger(className: "maps[0]").d(maps[0]);
     if (maps.length > 0) {
       return User.fromMap(maps[0]);
     } else {
@@ -86,7 +86,7 @@ class DBHelper {
     }
   }
 
-  Future getFriends() async {
+  Future<List<Friend>> getFriends() async {
     var dbClient = await this.db;
     List<Map> friends = await dbClient.query(Friend.tableName);
 
@@ -115,8 +115,6 @@ class DBHelper {
   Future saveMessage(Message message) async {
     var dbClient = await this.db;
     int id = await dbClient.insert(Message.tableName, message.toMap());
-    print(message.toMap());
-    print(id);
   }
 
   Future<List<Message>> getFriendChatMessage(Friend _friend) async {

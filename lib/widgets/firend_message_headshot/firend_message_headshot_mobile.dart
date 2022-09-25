@@ -24,7 +24,7 @@ class _FirendMessageHeadshotMobileState
             if (Config.friendCache.containsKey(widget.id)) {
               File file = Config.getHeadShot(
                   widget.id, Config.friendCache[widget.id].image);
-              //print('project snapshot data is: ${projectSnap.data}');
+
               if (file.existsSync()) {
                 return CircleAvatar(
                   maxRadius: widget.size,
@@ -46,7 +46,7 @@ class _FirendMessageHeadshotMobileState
             }
           } else {
             File file = Config.getHeadShot(widget.id, snapshot.data.data);
-            print("file.existsSync() : ${file.existsSync()}");
+
             if (snapshot.data.data != null && file.existsSync()) {
               return CircleAvatar(
                   maxRadius: widget.size,

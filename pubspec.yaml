@@ -37,9 +37,10 @@ dependencies:
     firebase_core: ^1.14.0
     imei_plugin: ^1.2.0
     connectivity_plus: ^2.3.6
-    image_picker: ^0.8.5+3
-    cached_network_image: ^3.2.1
+    image_picker: ^0.8.5+2
+    cached_network_image: 3.1.0
     flutter_uploader: ^1.2.1
+    flutter_voip_kit: ^0.0.6
 dev_dependencies:
     flutter_test:
         sdk: flutter

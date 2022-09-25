@@ -23,7 +23,6 @@ class LoginPageViewModel extends BaseViewModel {
   LoginPageViewModel();
 
   Future<String> authUser(LoginData data) async {
-    print('Name: ${data.name}, Password: ${data.password}');
     try {
       DBHelper dbHelper = new DBHelper();
       Database database = await dbHelper.db;
@@ -35,13 +34,13 @@ class LoginPageViewModel extends BaseViewModel {
         Database database = await dbHelper.db;
 
         Authentication.status = LoginStatus.signIn;
-        print(resp.data);
+        getLogger(className: "authUser").d(resp.data);
         Authentication.user = User(
             id: resp.data['id'],
             account: resp.data['email'],
             name: resp.data['name'],
             password: resp.data['password'],
-            firendCode: resp.data['friend'],
+            friendCode: resp.data['friendCode'],
             userSM: resp.data['userSM'],
             image: resp.data['image']);
         await database.insert(
@@ -55,13 +54,11 @@ class LoginPageViewModel extends BaseViewModel {
         return resp.message;
       }
     } catch (e) {
-      print(e.toString());
       return e.toString();
     }
   }
 
   Future<String> signup(LoginData data) async {
-    print('Name: ${data.name}, Password: ${data.password}');
     try {
       APIReturn resp = await NetWorkAPI.createUser(data.name, data.password);
 
@@ -74,7 +71,7 @@ class LoginPageViewModel extends BaseViewModel {
             account: resp.data['email'],
             name: resp.data['name'],
             password: resp.data['password'],
-            firendCode: resp.data['friend'],
+            friendCode: resp.data['friendCode'],
             userSM: resp.data['userSM']);
         await database.insert(
           'tb_userInfo',
@@ -82,7 +79,7 @@ class LoginPageViewModel extends BaseViewModel {
         );
         Authentication.status = LoginStatus.signIn;
         messaging.getToken().then((value) async {
-          getLogger("LoginPageViewModel").d(value);
+          getLogger(className: "LoginPageViewModel").d(value);
           await NetWorkAPI.updateToken(value);
         });
         return null;
@@ -90,15 +87,13 @@ class LoginPageViewModel extends BaseViewModel {
         return resp.message;
       }
     } catch (e) {
-      print(e.toString());
       return e.toString();
     }
-    return '123';
+
     // });
   }
 
   Future<String> recoverPassword(String name) {
-    print('Name: $name');
     // return Future.delayed(loginTime).then((_) {
     //   if (!users.containsKey(name)) {
     //     return 'Username not exists';
