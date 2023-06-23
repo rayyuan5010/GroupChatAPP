@@ -66,15 +66,6 @@ class _FirendMessageHeadshotMobileState
                             .image);
               }
             }
-
-            // return
-            //     ? ,
-            //       )
-            //     : CircleAvatar(
-            //         maxRadius: widget.size,
-            //         backgroundColor: Colors.blueGrey,
-            //         child: Icon(FontAwesomeIcons.user),
-            //       );
           }
         });
   }

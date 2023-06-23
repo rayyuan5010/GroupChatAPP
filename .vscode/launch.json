@@ -8,7 +8,7 @@
             "name": "group_chat",
             "request": "launch",
             "type": "dart",
-            // "flutterMode": "profile"
+            "flutterMode": "debug"
         }
     ]
 }

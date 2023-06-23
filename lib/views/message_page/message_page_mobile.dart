@@ -1,24 +1,17 @@
 part of message_page_view;
 
 class _MessagePageMobile extends StatefulWidget {
-  _MessagePageMobile(this.viewModel, this.friend, this.group, this.isGroupChat);
+  _MessagePageMobile(this.viewModel);
   final MessagePageViewModel viewModel;
-  final Friend friend;
-  final Group group;
-  final bool isGroupChat;
   @override
-  State<_MessagePageMobile> createState() =>
-      _MessagePageMobileState(viewModel, friend, group, isGroupChat);
+  State<_MessagePageMobile> createState() => _MessagePageMobileState(viewModel);
 }
 
 class _MessagePageMobileState extends State<_MessagePageMobile>
     with AutomaticKeepAliveClientMixin {
-  _MessagePageMobileState(
-      this.viewModel, this.friend, this.group, this.isGroupChat);
+  _MessagePageMobileState(this.viewModel);
   final MessagePageViewModel viewModel;
-  final Friend friend;
-  final Group group;
-  final bool isGroupChat;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -84,32 +77,14 @@ class _MessagePageMobileState extends State<_MessagePageMobile>
                                   physics: NeverScrollableScrollPhysics(),
                                   controller: viewModel.controller,
                                   children: [
-                                    // GoogleMapWidget(
-                                    //     onFinished:
-                                    //         (Completer<GoogleMapController>
-                                    //             _controller) async {
-                                    //       final position = await Geolocator
-                                    //           .getCurrentPosition();
-                                    //       final GoogleMapController controller =
-                                    //           await _controller.future;
-                                    //       controller.animateCamera(
-                                    //           CameraUpdate.newCameraPosition(
-                                    //               CameraPosition(
-                                    //         target: LatLng(position.latitude,
-                                    //             position.longitude),
-                                    //         zoom: 14.4746,
-                                    //       )));
-                                    //       // viewModel.markers = {
-                                    //       //   Marker(
-                                    //       //     markerId: MarkerId("marker_1"),
-                                    //       //     position: LatLng(
-                                    //       //         position.latitude,
-                                    //       //         position.longitude),
-                                    //       //   )
-                                    //       // };
-                                    //       // viewModel.notifyListeners();
-                                    //     },
-                                    //     markers: viewModel.markers),
+                                    GoogleMapWidget(
+                                        onFinished:
+                                            (Completer<GoogleMapController>
+                                                _controller) async {
+                                          viewModel.getPosition(
+                                              context, _controller);
+                                        },
+                                        markers: viewModel.markers),
                                     Container()
                                   ],
                                 ),
@@ -152,17 +127,36 @@ class _MessagePageMobileState extends State<_MessagePageMobile>
                       },
                     ),
                   ))),
+              Container(height: 10),
               Container(
                   height: 40,
                   child: Row(
                     children: [
                       Expanded(
                         flex: 1,
-                        child: Icon(Icons.add),
+                        child: IconButton(
+                            onPressed: () {
+                              showCupertinoModalBottomSheet(
+                                // expand: true,
+                                context: context,
+                                // backgroundColor: Colors.transparent,
+                                builder: (context) {
+                                  return MessageTypeTablWidget(
+                                    onSelected: (String stickerId) {
+                                      viewModel.sendMessage(
+                                          type: MessageType.STIKER,
+                                          otherMessage: stickerId);
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            icon: Icon(Icons.add)),
                       ),
                       Expanded(
-                        flex: 8,
-                        child: SizedBox(
+                        flex: 6,
+                        child: Container(
+                          // color: Colors.red,
                           height: 40,
                           child: SingleChildScrollView(
                             child: TextField(
@@ -190,45 +184,13 @@ class _MessagePageMobileState extends State<_MessagePageMobile>
                       ),
                       Expanded(
                         flex: 1,
-                        child: IconButton(
-                          onPressed: () async {
-                            var time = DateTime.now().millisecondsSinceEpoch;
-                            Logger().d(time);
-                            String message =
-                                viewModel.sendMessageController.text;
-                            if (message.isEmpty) {
-                              return;
-                            }
-                            Message Tmessage = Message.fromMap({
-                              "senderId": Authentication.user.id,
-                              "senderName": Authentication.user.name,
-                              "reciver": friend.id,
-                              "reciveType": "0",
-                              "messageId": "${Authentication.user.id}-${time}",
-                              "messageType": "0",
-                              "messageTime": "$time",
-                              "messageContent": message,
-                              "messageTabId": "0"
-                            });
-                            viewModel.messageList.add(Tmessage);
-                            NetWorkAPI.sendMessage(
-                              isGroupChat ? group.id : friend.id,
-                              Tmessage,
-                            );
-                            viewModel.sendMessageController.clear();
-                            viewModel.notifyListeners();
-                            await Future.delayed(
-                                const Duration(milliseconds: 100));
-                            SchedulerBinding.instance
-                                ?.addPostFrameCallback((_) {
-                              viewModel.scrollController.animateTo(
-                                  viewModel.scrollController.position
-                                      .maxScrollExtent,
-                                  duration: Duration(milliseconds: 500),
-                                  curve: Curves.fastOutSlowIn);
-                            });
-                          },
-                          icon: Icon(Icons.send),
+                        child: TapDebouncer(
+                          cooldown: const Duration(milliseconds: 1000),
+                          onTap: () async => await viewModel.sendMessage(),
+                          builder: ((context, onTap) => IconButton(
+                                onPressed: onTap,
+                                icon: Icon(Icons.send),
+                              )),
                         ),
                       )
                     ],

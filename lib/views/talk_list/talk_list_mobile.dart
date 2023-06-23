@@ -1,12 +1,21 @@
 part of talk_list_view;
 
-class _TalkListMobile extends StatelessWidget {
+class _TalkListMobile extends StatefulWidget {
+  _TalkListMobile(this.viewModel);
+  final TalkListViewModel viewModel;
+  @override
+  State<_TalkListMobile> createState() => _TalkListMobileState(viewModel);
+}
+
+class _TalkListMobileState extends State<_TalkListMobile>
+    with AutomaticKeepAliveClientMixin {
   final TalkListViewModel viewModel;
 
-  _TalkListMobile(this.viewModel);
+  _TalkListMobileState(this.viewModel);
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: SafeArea(
           bottom: false,
@@ -124,6 +133,10 @@ class _TalkListMobile extends StatelessWidget {
           )),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {

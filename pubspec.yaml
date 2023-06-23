@@ -3,7 +3,7 @@ description: A new Flutter project.
 publish_to: none
 version: 1.0.2+1
 environment:
-    sdk: '>=2.3.0 <3.0.0'
+    sdk: '>=2.8.0 <3.0.0'
 dependencies:
     flutter:
         sdk: flutter
@@ -40,7 +40,11 @@ dependencies:
     image_picker: ^0.8.5+2
     cached_network_image: 3.1.0
     flutter_uploader: ^1.2.1
-    flutter_voip_kit: ^0.0.6
+    flutter_ion: ^1.0.0
+    modal_bottom_sheet: ^2.1.2
+    tap_debouncer: ^2.0.2
+    extended_image: ^4.0.0
+
 dev_dependencies:
     flutter_test:
         sdk: flutter

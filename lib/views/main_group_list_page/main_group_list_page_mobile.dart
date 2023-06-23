@@ -16,6 +16,7 @@ class _MainGroupListPageMobileState extends State<_MainGroupListPageMobile>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: SafeArea(
           bottom: false,

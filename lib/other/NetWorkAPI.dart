@@ -181,6 +181,29 @@ class NetWorkAPI {
     }
   }
 
+  static Future<APIReturn> checkSticker(String _id, {Function refresh}) async {
+    DBHelper dbHelper = new DBHelper();
+
+    final directory = await getExternalStorageDirectory();
+    String imagePath = "${directory.path}/Sticker/";
+
+    bool headshotExists = false;
+
+    if (!await Directory.fromUri(Uri.directory(imagePath)).exists()) {
+      Directory.fromUri(Uri.directory(imagePath)).create(recursive: true);
+    }
+
+    if (_isConnectionSuccessful) {
+      //have network
+
+      await downloadFile(
+          Config.apiURL('/file/image/headshot?i=$_id'), _id, imagePath);
+      return APIReturn(status: headshotExists, data: _id);
+    } else {
+      return APIReturn(status: headshotExists, data: _id);
+    }
+  }
+
   static Future<String> downloadFile(
       String url, String fileName, String dir) async {
     HttpClient httpClient = new HttpClient();
@@ -194,7 +217,7 @@ class NetWorkAPI {
       var response = await request.close();
       if (response.statusCode == 200) {
         var bytes = await consolidateHttpClientResponseBytes(response);
-        filePath = '$dir/$fileName.jpg';
+        filePath = '$dir/$fileName.gif';
         file = File(filePath);
         await file.writeAsBytes(bytes);
       } else
@@ -204,5 +227,9 @@ class NetWorkAPI {
     }
 
     return filePath;
+  }
+
+  static Future<APIReturn> getUsersSticker() async {
+    return _sendHTTP({'userId': Authentication.user.id}, "/user/sticker/get");
   }
 }

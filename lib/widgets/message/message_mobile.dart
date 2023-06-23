@@ -20,7 +20,10 @@ class _MessageMobile extends StatelessWidget {
             showTime: showTime);
       case MessageType.STIKER:
         return StikerMessageWidget(
-            message: message, self: user.id == message.senderId);
+            message: message,
+            self: user.id == message.senderId,
+            showHead: showHead,
+            showTime: showTime);
       case MessageType.IMAGE:
         return ImageMessageWidget(
             message: message, self: user.id == message.senderId);

@@ -14,10 +14,13 @@ import 'package:group_chat/model/message.dart';
 import 'package:group_chat/other/config.dart';
 import 'package:group_chat/widgets/message/message_widget.dart';
 import 'package:group_chat/widgets/message_list/message_list_widget.dart';
+import 'package:group_chat/widgets/message_type_tabl/message_type_tabl_widget.dart';
 import 'package:logger/logger.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:tap_debouncer/tap_debouncer.dart';
 import '../../model/message.dart';
 import '../../widgets/google_map/google_map_widget.dart';
 import 'message_page_view_model.dart';
@@ -35,11 +38,14 @@ class MessagePageView extends StatelessWidget {
   final bool isGroupChat;
   @override
   Widget build(BuildContext context) {
-    MessagePageViewModel viewModel =
-        MessagePageViewModel(title: isGroupChat ? group.name : friend.name);
+    MessagePageViewModel viewModel = MessagePageViewModel(
+        title: isGroupChat ? group.name : friend.name,
+        group: group,
+        isGroupChat: isGroupChat,
+        friend: friend);
     return ViewModelProvider<MessagePageViewModel>.withConsumer(
       onModelReady: (viewModel) {
-        viewModel.getPosition(context);
+        // viewModel.getPosition(context);
         if (!isGroupChat) {
           viewModel.getOldMessage(friend);
         }
@@ -48,7 +54,7 @@ class MessagePageView extends StatelessWidget {
       },
       builder: (context, viewModel, child) {
         return ScreenTypeLayout(
-          mobile: _MessagePageMobile(viewModel, friend, group, isGroupChat),
+          mobile: _MessagePageMobile(viewModel),
           desktop: _MessagePageDesktop(viewModel),
           tablet: _MessagePageTablet(viewModel),
         );

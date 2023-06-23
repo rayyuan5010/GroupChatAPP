@@ -6,13 +6,23 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:group_chat/core/base/base_view_model.dart';
 import 'package:group_chat/model/friend.dart';
+import 'package:group_chat/model/group.dart';
 import 'package:group_chat/model/message.dart';
+import 'package:group_chat/other/NetWorkAPI.dart';
+import 'package:group_chat/other/auth.dart';
 import 'package:group_chat/other/dbHelp.dart';
 import 'package:logger/logger.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MessagePageViewModel extends BaseViewModel {
-  MessagePageViewModel({@required this.title});
+  MessagePageViewModel(
+      {@required this.title,
+      @required this.friend,
+      @required this.group,
+      @required this.isGroupChat});
+  final Friend friend;
+  final Group group;
+  final bool isGroupChat;
   final String title;
   PageController controller = new PageController();
   Completer<GoogleMapController> mapController = Completer();
@@ -35,10 +45,11 @@ class MessagePageViewModel extends BaseViewModel {
   List<Message> messageList = [];
   String preMessageSender = null;
   String nextSender = null;
-  void getPosition(context) async {
-    position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    final GoogleMapController controller = await mapController.future;
+  void getPosition(
+      BuildContext context, Completer<GoogleMapController> _controller) async {
+    final position = await Geolocator.getCurrentPosition();
+    final GoogleMapController controller = await _controller.future;
+
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
       target: LatLng(position.latitude, position.longitude),
       zoom: 14.4746,
@@ -51,6 +62,7 @@ class MessagePageViewModel extends BaseViewModel {
           final snackBar = SnackBar(content: Text('你的位置'));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }));
+
     notifyListeners();
   }
 
@@ -80,5 +92,41 @@ class MessagePageViewModel extends BaseViewModel {
           curve: Curves.fastOutSlowIn);
     });
     notifyListeners();
+  }
+
+  sendMessage(
+      {MessageType type = MessageType.TEXT, String otherMessage = ""}) async {
+    var time = DateTime.now().millisecondsSinceEpoch;
+    Logger().d(time);
+    String message = sendMessageController.text;
+    if (type == MessageType.TEXT && message.isEmpty) {
+      return;
+    }
+    if (type != MessageType.TEXT) {
+      message = otherMessage;
+    }
+    Message Tmessage = Message.fromMap({
+      "senderId": Authentication.user.id,
+      "senderName": Authentication.user.name,
+      "reciver": friend.id,
+      "reciveType": "0",
+      "messageId": "${Authentication.user.id}-${time}",
+      "messageType": type.index.toString(),
+      "messageTime": "$time",
+      "messageContent": message,
+      "messageTabId": "0"
+    });
+    messageList.add(Tmessage);
+    NetWorkAPI.sendMessage(
+      isGroupChat ? group.id : friend.id,
+      Tmessage,
+    );
+    sendMessageController.clear();
+    notifyListeners();
+    await Future.delayed(const Duration(milliseconds: 100));
+    SchedulerBinding.instance?.addPostFrameCallback((_) {
+      scrollController.animateTo(scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
+    });
   }
 }

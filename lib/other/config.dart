@@ -7,7 +7,7 @@ import 'package:group_chat/other/dbHelp.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Config {
-  static String serverIP = "rayyuandst1.ddns.net";
+  static String serverIP = "rayyuandst.ddns.net";
   static bool debug = true;
   static String apiURL(String url) {
     return 'http://${serverIP}/api$url';
@@ -22,6 +22,13 @@ class Config {
     String headshot = "$imagePath$image.jpg";
 
     return File(headshot);
+  }
+
+  static File getSticker(String id) {
+    String imagePath = "$defaultPath/Sticker/images/";
+    String sticker = "$imagePath$id.gif";
+
+    return File(sticker);
   }
 
   static checkNeedToCreateRoom(Message message) async {

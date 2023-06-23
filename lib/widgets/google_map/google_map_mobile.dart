@@ -8,15 +8,14 @@ class _GoogleMapMobile extends StatefulWidget {
   final Set<Marker> markers;
   CameraPosition kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
+    zoom: 18,
   );
 
   @override
   State<_GoogleMapMobile> createState() => _GoogleMapMobileState();
 }
 
-class _GoogleMapMobileState extends State<_GoogleMapMobile>
-    with AutomaticKeepAliveClientMixin {
+class _GoogleMapMobileState extends State<_GoogleMapMobile> {
   //
 
   @override
@@ -35,6 +34,6 @@ class _GoogleMapMobileState extends State<_GoogleMapMobile>
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
+  // @override
+  // bool get wantKeepAlive => true;
 }
